@@ -15,7 +15,7 @@ let sampleProduct = {
 const ViewHeader = ({ title }) =>
   <View style={styles.welcomeContainer}>
     <View>
-      <Text></Text>
+      <Text>mayas branch</Text>
     </View>
     <View >
       <Text>{title}</Text>
