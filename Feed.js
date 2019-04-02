@@ -26,7 +26,7 @@ let sampleProduct = {
 const ViewHeader = ({ title }) =>
   <View style={styles.welcomeContainer}>
     <View>
-      <Text>mayas branch</Text>
+      <Text></Text>
     </View>
     <View >
       <Text>{title}</Text>
@@ -39,7 +39,7 @@ const ViewHeader = ({ title }) =>
 function LookFeed(props) {
   const products = props.products;
   const listProducts = products.map((product) =>
-    <Look product={product}></Look>
+    <Look product={product} key={product.title}></Look>
   )
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -54,7 +54,6 @@ function Hello(props) {
 const Look = ({ product }) =>
   <View>
     <LookPhoto photo={product.images[0].src} />
-    <Text>{product.images[0].src}</Text>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
       {/* <InfluencerInfo influencer={product.seller} /> */}
       <CartAddButton price={product.variants[0].price} />
@@ -63,7 +62,7 @@ const Look = ({ product }) =>
   </View>
 
 const LookPhoto = ({ photo }) =>
-  <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
+  <Image source={{uri:photo}} resizeMode="contain" style={styles.lookPhoto} />
 
 
 const LookDescription = ({ description,title }) =>
@@ -126,7 +125,7 @@ export default class Feed extends React.Component {
     return (
       <View style={styles.container}>
         <ViewHeader title="FEED" />
-        <LookFeed products={this.state.products} />
+        <LookFeed products={this.state.products} larry={"asfasdf"}/>
       </View>
     );
   }
