@@ -1,5 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
+import Client from 'shopify-buy';
+
+const client = Client.buildClient({
+  domain: 'shopherlook.myshopify.com',
+  storefrontAccessToken: ''
+});
+let allProducts = ""
+client.product.fetchAll().then((products) => {
+  allProducts = products;
+});
+let sample = "asfasf";
 
 let sampleProduct = {
   photo: require('./assets/450x200.png'),
@@ -25,30 +36,41 @@ const ViewHeader = ({ title }) =>
     </View>
   </View>
 
-const LookFeed = ({ products }) =>
-  <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-    <Look product={sampleProduct} smelliness={6} />
-    <Look product={sampleProduct} />
-    <Look product={sampleProduct} />
-    <Look product={sampleProduct} />
-  </ScrollView>
+function LookFeed(props) {
+  const products = props.products;
+  const listProducts = products.map((product) =>
+    <Look product={product}></Look>
+  )
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      {listProducts}
+    </ScrollView>
+  );
+}
+function Hello(props) {
+  return <div>Hello {props.name}</div>
+}
 
 const Look = ({ product }) =>
   <View>
-    <LookPhoto photo={product.photo} />
+    <LookPhoto photo={product.images[0].src} />
+    <Text>{product.images[0].src}</Text>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo influencer={product.seller} />
-      <CartAddButton price={product.price} />
+      {/* <InfluencerInfo influencer={product.seller} /> */}
+      <CartAddButton price={product.variants[0].price} />
     </View>
-    <LookDescription description={product.description} />
+    <LookDescription title={product.title} description={product.description} />
   </View>
 
 const LookPhoto = ({ photo }) =>
   <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
 
 
-const LookDescription = ({ description }) =>
-  <Text style={styles.lookDescription}>{description}</Text>
+const LookDescription = ({ description,title }) =>
+  <View>
+    <Text style={styles.lookDescription}>{description}</Text>
+    <Text style={styles.lookDescription}>{title}</Text>
+  </View>
 
 const CartAddButton = ({ price }) =>
   <View style={{
@@ -82,13 +104,29 @@ const InfluencerInfo = ({ influencer }) =>
   </View >
 
 export default class Feed extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      products: [],
+    };
+  }
+
+  componentDidMount() {
+    client.product.fetchAll().then((res) => {
+      this.setState({
+        products: res,
+      });
+    });
+  }
 
   render() {
-    let sample = "asfasf";
+
+
     return (
       <View style={styles.container}>
         <ViewHeader title="FEED" />
-        <LookFeed products={"shit"} />
+        <LookFeed products={this.state.products} />
       </View>
     );
   }
@@ -102,8 +140,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   welcomeContainer: {
-    justifyContent:'space-between',
-    flexDirection:'row',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
     marginTop: 50,
     marginBottom: 20,
