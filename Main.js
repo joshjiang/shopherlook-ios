@@ -19,28 +19,28 @@ import Client from 'shopify-buy';
 // 36eb3e596449687068dfca9da3dc8d3e
 
 
-const client = Client.buildClient({
-  domain: 'shopherlook.myshopify.com/',
-  storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
-});
+// const client = Client.buildClient({
+//   domain: 'shopherlook.myshopify.com/',
+//   storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
+// });
 
 class Main extends Component {
   state = {
     search: '',
-    products: [],
+    // products: [],
   };
 
   updateSearch = search => {
     this.setState({ search });
   };
 
-  componentDidMount() {
-    client.product.fetchAll().then((res) => {
-      this.setState({
-        products: res,
-      });
-    });
-  }
+  // componentDidMount() {
+  //   client.product.fetchAll().then((res) => {
+  //     this.setState({
+  //       products: res,
+  //     });
+  //   });
+  // }
   // make call to api
   // store in local component
 
@@ -52,7 +52,7 @@ class Main extends Component {
 
       //might need to pass the search into the discovercontainer
       <View style={styles.container}>
-        {/* <DiscoverContainer />  */}
+        <DiscoverContainer /> 
       </View>
     )
   }

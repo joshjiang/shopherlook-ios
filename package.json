@@ -11,7 +11,17 @@
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+<<<<<<< HEAD
     "react-native-shopify": "^0.2.7",
+=======
+    "react-native-elements": "^1.1.0",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-material-dropdown": "^0.11.1",
+    "react-native-shopify": "^0.2.7",
+    "react-native-slider": "^0.11.0",
+    "react-navigation": "^3.6.1",
+    "react-router-native": "^5.0.0",
+>>>>>>> michelle-local
     "shopify-buy": "^2.2.0"
   },
   "devDependencies": {
