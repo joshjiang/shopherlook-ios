@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // 4.4.2
 import { Dropdown } from 'react-native-material-dropdown';
 import Slider from "react-native-slider";
 
+//TESTING GITHUB
 
 class Filters extends Component {
    
