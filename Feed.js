@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import Client from 'shopify-buy';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
@@ -25,14 +27,14 @@ let sampleProduct = {
 
 const ViewHeader = ({ title }) =>
   <View style={styles.welcomeContainer}>
-    <View>
+    <View style={{width:50}}>
       <Text></Text>
     </View>
-    <View >
-      <Text>{title}</Text>
+    <View style={{width:50}}>
+      <Text style={{fontSize:15, paddingLeft:10}}>{title}</Text>
     </View>
-    <View>
-      <Image source={require('./assets/cart.png')} style={{ height: 30, width: 30 }} />
+    <View style={{width:50}}>
+      <Ionicons name="md-cart" size={27} style={{ }}/>
     </View>
   </View>
 
@@ -53,22 +55,27 @@ function Hello(props) {
 
 const Look = ({ product }) =>
   <View>
-    <LookPhoto photo={product.images[0].src} />
-    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      {/* <InfluencerInfo influencer={product.seller} /> */}
-      <CartAddButton price={product.variants[0].price} />
+    <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <InfluencerInfo influencer={sampleProduct.seller} />
+      <Text></Text>
+    </View>
+    <View>
+      <View style={{ padding: 10, zIndex: 10, position: 'absolute', bottom: 0, right: 0, left: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text></Text>
+        <CartAddButton price={product.variants[0].price} />
+      </View>
+      <LookPhoto photo={product.images[0].src} />
     </View>
     <LookDescription title={product.title} description={product.description} />
   </View>
 
 const LookPhoto = ({ photo }) =>
-  <Image source={{uri:photo}} resizeMode="contain" style={styles.lookPhoto} />
+  <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-
-const LookDescription = ({ description,title }) =>
+const LookDescription = ({ description, title }) =>
   <View>
+    <Text style={styles.lookTitle}>{title}</Text>
     <Text style={styles.lookDescription}>{description}</Text>
-    <Text style={styles.lookDescription}>{title}</Text>
   </View>
 
 const CartAddButton = ({ price }) =>
@@ -80,7 +87,9 @@ const CartAddButton = ({ price }) =>
     paddingRight: 20,
     paddingLeft: 20,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    backgroundColor: '#ffffffEE',
+    zIndex: 10
   }}>
     <Text>
       +  ${price}
@@ -125,7 +134,7 @@ export default class Feed extends React.Component {
     return (
       <View style={styles.container}>
         <ViewHeader title="FEED" />
-        <LookFeed products={this.state.products} larry={"asfasdf"}/>
+        <LookFeed products={this.state.products} larry={"asfasdf"} />
       </View>
     );
   }
@@ -136,7 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 0,
   },
   welcomeContainer: {
     justifyContent: 'space-between',
@@ -151,12 +160,18 @@ const styles = StyleSheet.create({
     width: 50
   },
   lookPhoto: {
-    resizeMode: 'stretch',
-    height: 200,
-    width: 400
+    resizeMode: 'cover',
+    height: 400,
+    width: 420
   },
   lookDescription: {
     flex: 1,
-    padding: 10
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 15,
+  },
+  lookTitle: {
+    padding: 15,
+    fontWeight: 'bold',
   },
 });
