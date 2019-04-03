@@ -5,54 +5,55 @@ import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 
-/*let sampleProduct = {
-  photo: require('./img/supreme.jpg'),
+let sampleProduct = {
+  photo: 'https://de9luwq5d40h2.cloudfront.net/catalog/product/large_image/00_406456.jpg',
   seller: {
-    profilePhoto: require('./img/supreme.jpg'),
+    profilePhoto: 'https://de9luwq5d40h2.cloudfront.net/catalog/product/large_image/00_406456.jpg',
     name: "Lorem Ipsum",
     handle: "@loremipsum"
   },
   price: 15,
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
-*/
+
 // 36eb3e596449687068dfca9da3dc8d3e
 
 
-const client = Client.buildClient({
-  domain: 'shopherlook.myshopify.com/',
-  storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
-});
+// const client = Client.buildClient({
+//   domain: 'shopherlook.myshopify.com/',
+//   storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
+// });
 
 class Main extends Component {
-  state = {
-    search: '',
-    products: [],
-  };
+  // state = {
+  //   search: '',
+  //   products: [],
+  // };
 
+  
   updateSearch = search => {
     this.setState({ search });
   };
 
-  componentDidMount() {
-    client.product.fetchAll().then((res) => {
-      this.setState({
-        products: res,
-      });
-    });
-  }
+  // componentDidMount() {
+  //   client.product.fetchAll().then((res) => {
+  //     this.setState({
+  //       products: res,
+  //     });
+  //   });
+  // }
   // make call to api
   // store in local component
 
   render() {
-    console.log(this.state.products);
+    // console.log(this.state.products);
 
-    const { search } = this.state;
+    // const { search } = this.state;
     return (
 
       //might need to pass the search into the discovercontainer
       <View style={styles.container}>
-        {/* <DiscoverContainer />  */}
+        <DiscoverContainer /> 
       </View>
     )
   }
@@ -150,10 +151,13 @@ const DiscoverLooks = ({ sampleProduct }) =>
 
 
 const LookPicture = ({ photo }) =>
-  // <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
-  // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
-  <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
-
+  //<MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
+  //  <Image source= {{uri:'https://cdn1.vectorstock.com/i/1000x1000/26/45/young-executive-woman-profile-icon-vector-9692645.jpg'}} resizeMode="contain" size={135} />
+  // <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
+  <Image
+          style={{width: 50, height: 50}}
+          source={{uri: 'https://cdn1.vectorstock.com/i/1000x1000/26/45/young-executive-woman-profile-icon-vector-9692645.jpg'}}
+        />
 const BottomHeader = ({ }) =>
   <View style={styles.bottomheaderbox}>
     <View style={styles.bottomheader}>
@@ -178,7 +182,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 20,
     marginRight: 10,
-    marginLeft: 10
+    marginLeft: 10,
+    // backgroundColor: '#F2F2F2'
   },
   bottomheader: {
     justifyContent: 'space-between',
