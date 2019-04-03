@@ -66,7 +66,7 @@ const DiscoverContainer = ({ looks }) =>
   <View>
     <TopHeader />
     <SearchDiscover />
-    <Filters />
+    <Filters />                                                                                                                                                                                                                                                                                                                                  
     <DiscoverLooks sampleProduct={sampleProduct} />
     {/* <DiscoverLooks /> */}
     <BottomHeader />
