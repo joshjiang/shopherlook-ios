@@ -2,17 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import Client from 'shopify-buy';
 import { Ionicons } from '@expo/vector-icons';
-
+import * as base from './environment';
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
-  storefrontAccessToken: ''
+  storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
-let allProducts = ""
-client.product.fetchAll().then((products) => {
-  allProducts = products;
-});
-let sample = "asfasf";
 
 let sampleProduct = {
   photo: require('./assets/450x200.png'),
@@ -27,14 +22,14 @@ let sampleProduct = {
 
 const ViewHeader = ({ title }) =>
   <View style={styles.welcomeContainer}>
-    <View style={{width:50}}>
+    <View style={{ width: 50 }}>
       <Text></Text>
     </View>
-    <View style={{width:50}}>
-      <Text style={{fontSize:15, paddingLeft:10}}>{title}</Text>
+    <View style={{ width: 50 }}>
+      <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
     </View>
-    <View style={{width:50}}>
-      <Ionicons name="md-cart" size={27} style={{ }}/>
+    <View style={{ width: 50 }}>
+      <Ionicons name="md-cart" size={27} style={{}} />
     </View>
   </View>
 
@@ -121,11 +116,15 @@ export default class Feed extends React.Component {
   }
 
   componentDidMount() {
-    client.product.fetchAll().then((res) => {
+    return client.product.fetchAll().then((res) => {
       this.setState({
         products: res,
       });
-    });
+    }).catch(function (error) {
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+      // ADD THIS THROW error
+      throw error;
+    });;
   }
 
   render() {
@@ -140,7 +139,7 @@ export default class Feed extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   container: {
     flex: 1,
   },

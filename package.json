@@ -21,7 +21,8 @@
     "shopify-buy": "^2.2.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "metro-react-native-babel-preset": "^0.53.1"
   },
   "private": true
 }
