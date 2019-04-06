@@ -11,8 +11,13 @@ import Main from './Main.js';
 import SignUp from './SignUp.js';
 
 
+// const FeedStack = createStackNavigator({
+//     FeedScreen: Feed,
+//     InfluencerProfileScreen: InfluencerProfile,
+// });
+
 const TabNavigator = createBottomTabNavigator({
-  FeedScreen: Feed,
+  FeedScreen: FeedStack,
   MainName: Main,
   SettingsName: Settings,
   
