@@ -11,16 +11,35 @@ import Main from './Main.js';
 import SignUp from './SignUp.js';
 
 
-// const FeedStack = createStackNavigator({
-//     FeedScreen: Feed,
-//     InfluencerProfileScreen: InfluencerProfile,
-// });
+const FeedStack = createStackNavigator({
+    FeedScreen: Feed,
+    InfluencerProfileScreen: InfluencerProfile,
+});
 
 const TabNavigator = createBottomTabNavigator({
   FeedScreen: FeedStack,
+  // FeedScreen: Feed,
   MainName: Main,
   SettingsName: Settings,
   
 });
 
 export default createAppContainer(TabNavigator);
+
+// class HomeScreen extends React.Component {
+//   render() {
+//     return (
+//       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//         <Text>Home Screen</Text>
+//       </View>
+//     );
+//   }
+// }
+
+// const AppNavigator2 = createStackNavigator({
+//   Home: HomeScreen
+// });
+
+// export default createAppContainer(AppNavigator2);
+
+// export default HomeScreen;

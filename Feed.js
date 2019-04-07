@@ -3,6 +3,8 @@ import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import Client from 'shopify-buy';
 import { Ionicons } from '@expo/vector-icons';
 import * as base from './environment';
+import { Button } from 'react-native-elements';
+
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
@@ -33,10 +35,10 @@ const ViewHeader = ({ title }) =>
     </View>
   </View>
 
-function LookFeed(props) {
+function LookFeed(props, passed) {
   const products = props.products;
   const listProducts = products.map((product) =>
-    <Look product={product} key={product.title}></Look>
+    <Look product={product} passed = {passed} key={product.title}></Look>
   )
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -48,10 +50,10 @@ function Hello(props) {
   return <div>Hello {props.name}</div>
 }
 
-const Look = ({ product }) =>
+const Look = ({ product }, passed ) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo influencer={sampleProduct.seller} />
+      <InfluencerInfo influencer={sampleProduct.seller} passed = {passed} />
       <Text></Text>
     </View>
     <View>
@@ -91,11 +93,12 @@ const CartAddButton = ({ price }) =>
     </Text>
   </View>
 
-const InfluencerInfo = ({ influencer }) =>
+const InfluencerInfo = ({ influencer }, passed) =>
   <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
     <Image source={influencer.profilePhoto} style={styles.influencerPhoto} />
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+  
         <Text>
           {influencer.name}
         </Text>
@@ -133,7 +136,11 @@ export default class Feed extends React.Component {
     return (
       <View style={styles.container}>
         <ViewHeader title="FEED" />
-        <LookFeed products={this.state.products} larry={"asfasdf"} />
+        <Button
+          title={"helloooo"}
+          onPress={() => this.props.navigation.navigate('InfluencerProfileScreen')}
+        />
+        <LookFeed products={this.state.products} passed = {this} larry={"asfasdf"} />
       </View>
     );
   }
