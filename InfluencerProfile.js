@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native';
-import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
+import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 
 
 
 
 class InfluencerProfile extends Component {
+    
     render() {
+        console.log("properties are")
+        console.log(this.props)
         return (
             <View style={styles.container}>
-                <ProfileContainer />
+                <ProfileContainer navigation = {this.props.navigation}/>
             </View>
         )
     }
 }
 
-const ProfileContainer = ({ }) =>
+const ProfileContainer = ({navigation}) =>
     <View>
         <ViewHeader />
-        <InfluencerContainer />
+        <InfluencerContainer navigation = {navigation}/>
     </View>
 
 const ViewHeader = ({ }) =>
@@ -34,10 +37,10 @@ const ViewHeader = ({ }) =>
     </View>
 
 
-const InfluencerContainer = ({ looks }) =>
+const InfluencerContainer = ({ looks, navigation }) =>
     <View>
         <BioContainer />
-        <LookPhotoFeed />
+        <LookPhotoFeed navigation = {navigation}/>
     </View>
 
 
@@ -128,7 +131,7 @@ const InfluencerBio = ({ }) =>
 
 
 
-const LookPhotoFeed = ({ }) =>
+const LookPhotoFeed = ({navigation}) =>
 
     <View style={{ height: 590 }}>
 
@@ -142,34 +145,34 @@ const LookPhotoFeed = ({ }) =>
 
             <View style={styles.betweenLooks}>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
                 <View style={styles.looksStyle}>
-                    <LookPicture />
-                    <LookPicture />
-                    <LookPicture />
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
+                    <LookPicture navigation = {navigation}/>
                 </View>
 
             </View>
@@ -179,11 +182,13 @@ const LookPhotoFeed = ({ }) =>
 
 
 
-const LookPicture = ({ }) =>
+const LookPicture = ({navigation}) =>
 
-    <View>
+    
+        <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
         <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' />
-    </View>
+    </TouchableOpacity>
+      
 
 const CartAddButton = ({ }) =>
     <Ionicons name="md-lock" size={10} />

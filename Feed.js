@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import Client from 'shopify-buy';
 import { Ionicons } from '@expo/vector-icons';
 import * as base from './environment';
@@ -37,8 +37,9 @@ const ViewHeader = ({ title }) =>
 
 function LookFeed(props, passed) {
   const products = props.products;
+  const navigation = props.navigation;
   const listProducts = products.map((product) =>
-    <Look product={product} passed = {passed} key={product.title}></Look>
+    <Look product={product} passed = {passed} key={product.title} navigation = {navigation}></Look>
   )
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -50,10 +51,10 @@ function Hello(props) {
   return <div>Hello {props.name}</div>
 }
 
-const Look = ({ product }, passed ) =>
+const Look = ({ product, navigation }, passed ) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo influencer={sampleProduct.seller} passed = {passed} />
+      <InfluencerInfo influencer={sampleProduct.seller} passed = {passed} navigation = {navigation} />
       <Text></Text>
     </View>
     <View>
@@ -63,15 +64,21 @@ const Look = ({ product }, passed ) =>
       </View>
       <LookPhoto photo={product.images[0].src} />
     </View>
-    <LookDescription title={product.title} description={product.description} />
+    <LookDescription title={product.title} description={product.description} navigation = {navigation}/>
   </View>
 
 const LookPhoto = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-const LookDescription = ({ description, title }) =>
+const LookDescription = ({ description, title, navigation}) =>
   <View>
-    <Text style={styles.lookTitle}>{title}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+      <Text style={styles.lookTitle}> {title} </Text>
+      </TouchableOpacity>
+          
+          
+        
+    
     <Text style={styles.lookDescription}>{description}</Text>
   </View>
 
@@ -93,15 +100,17 @@ const CartAddButton = ({ price }) =>
     </Text>
   </View>
 
-const InfluencerInfo = ({ influencer }, passed) =>
+const InfluencerInfo = ({ influencer, navigation}, {passed}) =>
   <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
     <Image source={influencer.profilePhoto} style={styles.influencerPhoto} />
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-  
-        <Text>
-          {influencer.name}
-        </Text>
+      <TouchableOpacity onPress={() => navigation.navigate('InfluencerProfileScreen')}>
+      <Text>{influencer.name}</Text>
+      </TouchableOpacity>
+        
+          
+       
         <Text>
           {influencer.handle}
         </Text>
@@ -136,11 +145,7 @@ export default class Feed extends React.Component {
     return (
       <View style={styles.container}>
         <ViewHeader title="FEED" />
-        <Button
-          title={"helloooo"}
-          onPress={() => this.props.navigation.navigate('InfluencerProfileScreen')}
-        />
-        <LookFeed products={this.state.products} passed = {this} larry={"asfasdf"} />
+        <LookFeed products={this.state.products} passed = {this} navigation = {this.props.navigation} />
       </View>
     );
   }
