@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Image } from 'react-native'
+import {View, Text, StyleSheet, Image, Button} from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 function TempHeader() {
@@ -24,16 +24,21 @@ let sampleItem = {
 }
 
 
-function NameBar({user}){
+function NameBar({user, navigation}){
     return (
         <View style = {styles.nameBar}>
         <Image 
         style = {{width:40, height: 40, borderRadius: 20}}
         source = {{uri: user.photo}}
         />
-        <Text style = {{marginLeft: 10, marginTop: 10, fontFamily: 'Helvetica', fontSize: 15}}>
+        {/* <Text style = {{marginLeft: 10, marginTop: 10, fontFamily: 'Helvetica', fontSize: 15}}>
             {user.name}
-        </Text>
+        </Text> */}
+
+        <Button
+          title= {user.name}
+          onPress={() => navigation.navigate('InfluencerProfileScreen')}
+        />
         </View>
 
     );
@@ -70,7 +75,7 @@ class SinglePost extends Component {
         return(
             <View style = {styles.container}>
                <TempHeader/>
-               <NameBar user = {sampleUser}/>
+               <NameBar user = {sampleUser} navigation = {this.props.navigation}/>
               <ImageClothes item = {sampleItem}/>
               <Title item = {sampleItem}/>
               <Description item = {sampleItem}/>

@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 
-/*let sampleProduct = {
-  photo: require('./img/supreme.jpg'),
+let sampleProduct = {
+  photo: require('./assets/supreme.jpg'),
   seller: {
-    profilePhoto: require('./img/supreme.jpg'),
+    profilePhoto: require('./assets/supreme.jpg'),
     name: "Lorem Ipsum",
     handle: "@loremipsum"
   },
   price: 15,
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
-*/
+
 // 36eb3e596449687068dfca9da3dc8d3e
 
 
@@ -27,7 +27,7 @@ const client = Client.buildClient({
 class Main extends Component {
   state = {
     search: '',
-    products: [],
+    // products: [],
   };
 
   updateSearch = search => {
@@ -41,8 +41,7 @@ class Main extends Component {
       });
     });
   }
-  // make call to api
-  // store in local component
+
 
   render() {
     console.log(this.state.products);
@@ -52,7 +51,7 @@ class Main extends Component {
 
       //might need to pass the search into the discovercontainer
       <View style={styles.container}>
-        {/* <DiscoverContainer />  */}
+        <DiscoverContainer navigation = {this.props.navigation} /> 
       </View>
     )
   }
@@ -62,12 +61,12 @@ class Main extends Component {
           source={require('./img/supreme.jpg')}
     /> */}
 
-const DiscoverContainer = ({ looks }) =>
+const DiscoverContainer = ({ looks, navigation }) =>
   <View>
     <TopHeader />
     <SearchDiscover />
-    <Filters />                                                                                                                                                                                                                                                                                                                                  
-    <DiscoverLooks sampleProduct={sampleProduct} />
+    <Filters />
+    <DiscoverLooks sampleProduct={sampleProduct} navigation = {navigation} />
     {/* <DiscoverLooks /> */}
     <BottomHeader />
   </View>
@@ -108,39 +107,39 @@ const AccessoryFilter = ({ }) =>
 const ClothesFilter = ({ }) =>
   <MaterialCommunityIcons name="tshirt-v" size={32} color="mediumpurple" />
 
-const DiscoverLooks = ({ sampleProduct }) =>
+const DiscoverLooks = ({ sampleProduct, navigation}) =>
   <View style={{ height: 590 }}>
     <ScrollView >
       <View style={styles.betweenLooks}>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
+          <LookPicture photo={sampleProduct.photo} navigation = {navigation}/>
         </View>
       </View>
 
@@ -149,10 +148,14 @@ const DiscoverLooks = ({ sampleProduct }) =>
   </View>
 
 
-const LookPicture = ({ photo }) =>
+const LookPicture = ({ photo, navigation}) =>
   // <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
   // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
+  <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+
   <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
+  </TouchableOpacity>
+  
 
 const BottomHeader = ({ }) =>
   <View style={styles.bottomheaderbox}>
