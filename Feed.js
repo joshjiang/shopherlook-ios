@@ -3,6 +3,7 @@ import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import Client from 'shopify-buy';
 import { Ionicons } from '@expo/vector-icons';
 import * as base from './environment';
+var Buffer = require('buffer/').Buffer;
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
@@ -51,7 +52,7 @@ function Hello(props) {
 const Look = ({ product }) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo influencer={sampleProduct.seller} />
+      <InfluencerInfo product={product} />
       <Text></Text>
     </View>
     <View>
@@ -70,7 +71,7 @@ const LookPhoto = ({ photo }) =>
 const LookDescription = ({ description, title }) =>
   <View>
     <Text style={styles.lookTitle}>{title}</Text>
-    <Text style={styles.lookDescription}>{description}</Text>
+    <Text style={styles.lookDescription}>{description.split('Product Description ')[1]}</Text>
   </View>
 
 const CartAddButton = ({ price }) =>
@@ -91,21 +92,48 @@ const CartAddButton = ({ price }) =>
     </Text>
   </View>
 
-const InfluencerInfo = ({ influencer }) =>
-  <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
-    <Image source={influencer.profilePhoto} style={styles.influencerPhoto} />
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-        <Text>
-          {influencer.name}
-        </Text>
-        <Text>
-          {influencer.handle}
-        </Text>
-      </View>
-    </View >
-  </View >
+class InfluencerInfo extends React.Component {
+  constructor() {
+    super();
 
+    this.state = {
+      name: '',
+      handle: '',
+    };
+  }
+
+  componentDidMount() {
+    console.log();
+    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          name: responseJson.first_name + ' ' + responseJson.last_name,
+          handle: responseJson.instagram_handle,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  render() {
+    return (
+      <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
+        {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Text>
+              {this.state.name}
+            </Text>
+            <Text>
+              {this.state.handle}
+            </Text>
+          </View>
+        </View >
+      </View >
+    )
+  }
+}
 export default class Feed extends React.Component {
   constructor() {
     super();
@@ -139,7 +167,7 @@ export default class Feed extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

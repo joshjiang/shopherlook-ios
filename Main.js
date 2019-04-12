@@ -5,17 +5,17 @@ import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 
-/*let sampleProduct = {
-  photo: require('./img/supreme.jpg'),
+let sampleProduct = {
+  photo: require('./assets/supreme.jpg'),
   seller: {
-    profilePhoto: require('./img/supreme.jpg'),
+    profilePhoto: require('./assets/supreme.jpg'),
     name: "Lorem Ipsum",
     handle: "@loremipsum"
   },
   price: 15,
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
-*/
+
 // 36eb3e596449687068dfca9da3dc8d3e
 
 
