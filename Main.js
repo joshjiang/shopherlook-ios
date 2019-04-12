@@ -5,24 +5,36 @@ import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 
-/*let sampleProduct = {
-  photo: require('./img/supreme.jpg'),
-  seller: {
-    profilePhoto: require('./img/supreme.jpg'),
-    name: "Lorem Ipsum",
-    handle: "@loremipsum"
-  },
-  price: 15,
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-};
-*/
-// 36eb3e596449687068dfca9da3dc8d3e
-
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com/',
   storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
 });
+
+
+let allProducts = ""
+client.product.fetchAll().then((products) => {
+  allProducts = products;
+});
+let sample = "asfasf";
+
+
+
+let sampleProduct = {
+  photo: require('./assets/cart.png'),
+  seller: {
+    profilePhoto: require('./assets/cart.png'),
+    name: "Lorem Ipsum",
+    handle: "@loremipsum" 
+  },
+  price: 15,
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+};
+
+// 36eb3e596449687068dfca9da3dc8d3e
+
+
+
 
 class Main extends Component {
   state = {
@@ -51,8 +63,9 @@ class Main extends Component {
     return (
 
       //might need to pass the search into the discovercontainer
+      // <DiscoverContainer />
       <View style={styles.container}>
-        {/* <DiscoverContainer />  */}
+        <DiscoverContainer products = {this.state.products}/>
       </View>
     )
   }
@@ -62,13 +75,17 @@ class Main extends Component {
           source={require('./img/supreme.jpg')}
     /> */}
 
-const DiscoverContainer = ({ looks }) =>
+
+// <DiscoverLooks sampleProduct={sampleProduct} />
+// <DiscoverFeed products={products} larry={"asfasdf"}/>
+// looks
+const DiscoverContainer = ({ products }) =>
   <View>
     <TopHeader />
     <SearchDiscover />
-    <Filters />
-    <DiscoverLooks sampleProduct={sampleProduct} />
-    {/* <DiscoverLooks /> */}
+    <Filters />                                              
+    
+    <DiscoverFeed products={products} larry={"asfasdf"}/>
     <BottomHeader />
   </View>
 
@@ -108,51 +125,101 @@ const AccessoryFilter = ({ }) =>
 const ClothesFilter = ({ }) =>
   <MaterialCommunityIcons name="tshirt-v" size={32} color="mediumpurple" />
 
-const DiscoverLooks = ({ sampleProduct }) =>
+
+
+
+
+
+  // sampleProduct
+  // not using DiscoverLooks as of now, trying to use the function 
+  // DiscoverFeed below
+const DiscoverLooks = ({ product }) =>
   <View style={{ height: 590 }}>
     <ScrollView >
       <View style={styles.betweenLooks}>
         <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
+        
+          <Look product={product.images[0].src} />
+          
         </View>
-        <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-        </View>
-        <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-        </View>
-        <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-        </View>
-        <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-        </View>
-        <View style={styles.looksStyle}>
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-          <LookPicture photo={sampleProduct.photo} />
-        </View>
+
       </View>
 
 
     </ScrollView>
   </View>
 
+function DiscoverFeed(props) {
+  const products = props.products;
+  const listProducts = products.map((product) =>
+    <Look product={product} key={product.title}></Look>
+  )
+  return (
+
+    // <Look ></Look>
+    // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    
+    //  <View style={styles.betweenLooks}>
+    // <View style={styles.looksStyle}>
+
+
+    <View style={{ height: 480 }}>
+    
+    <ScrollView>
+
+   
+
+        {listProducts}
+
+
+      
+
+        
+      
+       
+
+    
+    </ScrollView>
+
+</View>
+    // <ScrollView >
+    //   <Look ></Look>
+    // </ScrollView>
+  );
+}
+
+const Look = ({ product }) =>
+  <View>
+      {/* <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+       style={{width: 400, height: 400}} />
+     */}
+    <LookPicture photo={product.images[0].src} />
+    
+  </View>
+
+// photo
 
 const LookPicture = ({ photo }) =>
-  // <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
+  <Image source={{uri:photo}} resizeMode="contain" style={styles.lookPhoto} />
+{/* <View></View> */}
+  
+// photo
+
+// <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
   // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
-  <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const BottomHeader = ({ }) =>
   <View style={styles.bottomheaderbox}>
@@ -229,6 +296,29 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100
   },
+
+
+
+
+  looksStyle: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 1,
+    marginBottom: 1,
+    marginRight: 1,
+    marginLeft: 1,
+    backgroundColor: 'white',
+    padding: 0
+
+},
+betweenLooks: {
+
+    marginTop: 5,
+    marginBottom: 30,
+    marginLeft: 40,
+    marginRight: 40
+},
 });
 
 export default Main;
