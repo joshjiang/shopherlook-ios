@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import Client from 'shopify-buy';
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
@@ -31,7 +31,7 @@ const ViewHeader = ({ title }) =>
       <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
     </View>
     <View style={{ width: 50 }}>
-      <Ionicons name="md-cart" size={27} style={{}} />
+      <Icon name="shopping-cart" size={30} />
     </View>
   </View>
 
