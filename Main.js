@@ -16,14 +16,6 @@ let sampleProduct = {
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
 
-// 36eb3e596449687068dfca9da3dc8d3e
-
-
-// const client = Client.buildClient({
-//   domain: 'shopherlook.myshopify.com/',
-//   storefrontAccessToken: '36eb3e596449687068dfca9da3dc8d3e'
-// });
-
 class Main extends Component {
   state = {
     search: '',

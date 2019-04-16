@@ -8,11 +8,12 @@ import Feed from './Feed.js';
 import Filters from './Filters.js';
 import InfluencerProfile from './InfluencerProfile.js';
 import Main from './Main.js';
+import Cart from './Cart.js';
 import SignUp from './SignUp.js';
 
 
 const TabNavigator = createBottomTabNavigator({
-  FeedScreen: Feed,
+  Feed: Cart,
   MainName: Main,
   SettingsName: Settings,
   
