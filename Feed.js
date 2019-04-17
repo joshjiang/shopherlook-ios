@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
-=======
 import React, { Component } from 'react';
 import { StyleSheet, Text, ScrollView, View, Image, Modal, TouchableOpacity, Alert } from 'react-native';
 import Cart from './Cart';
 import LineItem from './LineItem';
->>>>>>> josh-local
 import Client from 'shopify-buy';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as base from './environment';
@@ -46,11 +41,7 @@ function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
   const listProducts = products.map((product) =>
-<<<<<<< HEAD
-    <Look product={product} passed={passed} key={product.title} navigation={navigation}></Look>
-=======
-    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart}></Look>
->>>>>>> josh-local
+    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
   )
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -59,11 +50,7 @@ function LookFeed(props, passed) {
   );
 }
 
-<<<<<<< HEAD
-const Look = ({ product, navigation }, passed) =>
-=======
-const Look = ({ product, addVariantToCart}) =>
->>>>>>> josh-local
+const Look = ({ product, addVariantToCart, navigation, passed}) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
       <InfluencerInfo product={product} passed={passed} navigation={navigation} />
@@ -285,11 +272,6 @@ export default class Feed extends React.Component {
 
 
     return (
-<<<<<<< HEAD
-      <View style={styles.container}>
-        <ViewHeader title="FEED" />
-        <LookFeed products={this.state.products} passed={this} navigation={this.props.navigation} />
-=======
       <View style={styles.container} >
         <ViewHeader title="FEED"
           cartModal={<CartModal cart={
@@ -300,7 +282,6 @@ export default class Feed extends React.Component {
               updateQuantityInCart={this.updateQuantityInCart}
               removeLineItemInCart={this.removeLineItemInCart} />} />} />
         <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} />
->>>>>>> josh-local
       </View>
     );
   }
