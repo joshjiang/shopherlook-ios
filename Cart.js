@@ -1,75 +1,73 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
-import Client from 'shopify-buy';
-import * as base from './environment';
+import LineItem from './LineItem'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const client = Client.buildClient({
-    domain: 'shopherlook.myshopify.com',
-    storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
-});
-
-let sampleProduct = {
-    photo: require('./assets/supreme.jpg'),
-    seller: {
-        profilePhoto: require('./assets/50x50.png'),
-        name: "Lorem Ipsum",
-        handle: "@loremipsum"
-    },
-    price: 15,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-};
-
-const LineItem = ({ line_item }) =>
-    <View style={{ height: 80 }}>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View>
-                <Text> an image</Text>
-            </View>
-            <View >
-                <View>
-                    <Text>{line_item.seller.name}</Text>
-                </View>
-            </View>
-            <View>
-                <View>
-                    <Text>$ {(line_item.price).toFixed(2)}</Text>
-                </View>
-            </View>
-            <TouchableOpacity><Text style={{fontSize:20}}>×</Text></TouchableOpacity>
-        </View>
-    </View>
-
 class Cart extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.state = {
-            totalPrice: "30",
-        };
+        this.openCheckout = this.openCheckout.bind(this);
+    }
+
+    openCheckout() {
+        window.open(this.props.checkout.webUrl);
     }
 
     render() {
+        let line_items = this.props.checkout.lineItems.map((line_item) => {
+            console.log(line_item)
+            return (
+                <LineItem
+                    updateQuantityInCart={this.props.updateQuantityInCart}
+                    removeLineItemInCart={this.props.removeLineItemInCart}
+                    key={line_item.id.toString()}
+                    line_item={line_item}
+                />
+            );
+        });
+
         return (
-            <View style={{ paddingTop: 60, paddingLeft: 20, paddingRight: 20, flex: 1 }}>
+            <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20, flex: 1 }}>
                 <View style={{ height: 30 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
-                        <Icon name="shopping-cart" size={30}  />
+                        <Text></Text>
                         <Text style={{ fontSize: 30 }}> Your Cart </Text>
-                        <TouchableOpacity><Text style={{ fontSize: 30, color: '#00000088', fontWeight: 'bold' }}>x</Text></TouchableOpacity>
+                        <TouchableOpacity><Text></Text></TouchableOpacity>
                     </View>
                 </View>
-                <ScrollView style={{ flex: 1, flexDirection: 'column', paddingTop: 30 }}>
-                    <LineItem line_item={sampleProduct} />
-                    <LineItem line_item={sampleProduct} />
-                </ScrollView>
+                <View style={{ height: 600 }}>
+                    <ScrollView style={{ flex: 1, flexDirection: 'column', paddingTop: 30 }}>
+                        {line_items}
+                    </ScrollView>
+                </View>
                 <View style={{ height: 40 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 30, paddingRight: 30, }}>
                         <Text style={{ fontSize: 20, }}>
-                            TOTAL:
+                            SUBTOTAL
                         </Text>
                         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-                            ${this.state.totalPrice}
+                            $ {this.props.checkout.subtotalPrice}
+                        </Text>
+                    </View>
+                </View>
+                <View style={{ height: 40 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 30, paddingRight: 30, }}>
+                        <Text style={{ fontSize: 20, }}>
+                            TAX
+                        </Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                            $ {this.props.checkout.totalTax}
+                        </Text>
+                    </View>
+                </View>
+                <View style={{ height: 40 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 30, paddingRight: 30, }}>
+                        <Text style={{ fontSize: 20, }}>
+                            Total
+                        </Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                            $ {this.props.checkout.totalPrice}
                         </Text>
                     </View>
                 </View>
@@ -77,10 +75,14 @@ class Cart extends Component {
                     paddingLeft: 20,
                     paddingRight: 20,
                     alignItems: 'center',
+                    height: 50,
                     padding: 10,
                     justifyContent: 'center',
                     backgroundColor: '#000',
-                }}>
+                }}
+                    onPress={() => {
+                        { this.openCheckout };
+                    }}>
                     <Text style={{ color: '#fff' }}>Checkout</Text>
                 </TouchableOpacity>
             </View>

@@ -13,7 +13,7 @@ import SignUp from './SignUp.js';
 
 
 const TabNavigator = createBottomTabNavigator({
-  Feed: Cart,
+  Feed: Feed,
   MainName: Main,
   SettingsName: Settings,
   
