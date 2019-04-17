@@ -38,15 +38,20 @@ const ViewHeader = ({ title }) =>
 function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
+
+
   const listProducts = products.map((product) =>
     <Look product={product} passed={passed} key={product.title} navigation={navigation}></Look>
   )
+
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {listProducts}
     </ScrollView>
   );
 }
+
 function Hello(props) {
   return <div>Hello {props.name}</div>
 }
@@ -103,18 +108,21 @@ class InfluencerInfo extends React.Component {
     this.state = {
       name: '',
       handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
     };
   }
 
 
   componentDidMount() {
-    console.log();
+    // console.log(person);
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
+          id: responseJson.ID,
         });
       })
       .catch((error) => {
@@ -122,13 +130,18 @@ class InfluencerInfo extends React.Component {
       });
   }
 
+
+
   render() {
     return (
       <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
         {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+              id: this.state.id,
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
+            })}>
               <Text>{this.state.name}</Text>
             </TouchableOpacity>
             <Text>
@@ -140,6 +153,8 @@ class InfluencerInfo extends React.Component {
     )
   }
 }
+
+
 export default class Feed extends React.Component {
   constructor() {
     super();
@@ -151,6 +166,7 @@ export default class Feed extends React.Component {
 
   componentDidMount() {
     return client.product.fetchAll().then((res) => {
+      // console.log(res);
       this.setState({
         products: res,
       });
@@ -162,7 +178,6 @@ export default class Feed extends React.Component {
   }
 
   render() {
-
 
     return (
       <View style={styles.container}>

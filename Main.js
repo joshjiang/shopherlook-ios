@@ -153,6 +153,7 @@ const LookPicture = ({ photo, navigation}) =>
   <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
 
   <Image source={photo} resizeMode="contain" style={styles.lookPhoto} />
+
   </TouchableOpacity>
   
 
