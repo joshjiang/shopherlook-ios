@@ -183,8 +183,7 @@ class InfluencerInfo extends React.Component {
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
               id: this.state.id,
-              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-            })}>
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
               <Text>{this.state.name}</Text>
             </TouchableOpacity>
             <Text>
@@ -294,7 +293,7 @@ export default class Feed extends React.Component {
               handleCartClose={this.handleCartClose}
               updateQuantityInCart={this.updateQuantityInCart}
               removeLineItemInCart={this.removeLineItemInCart} />} />} />
-        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} />
+        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation = {this.props.navigation} />
       </View>
     );
   }
