@@ -156,6 +156,7 @@ class InfluencerInfo extends React.Component {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson)
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
@@ -194,6 +195,10 @@ export default class Feed extends React.Component {
       checkout: { lineItems: [] },
       shop: {}
     };
+    this.handleCartClose = this.handleCartClose.bind(this);
+    this.addVariantToCart = this.addVariantToCart.bind(this);
+    this.updateQuantityInCart = this.updateQuantityInCart.bind(this);
+    this.removeLineItemInCart = this.removeLineItemInCart.bind(this);
   }
 
   componentDidMount() {
@@ -253,6 +258,7 @@ export default class Feed extends React.Component {
   }
 
   removeLineItemInCart(lineItemId) {
+    console.log('removed')
     const checkoutId = this.state.checkout.id
     return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
       this.setState({
