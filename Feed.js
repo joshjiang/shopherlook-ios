@@ -40,9 +40,13 @@ const ViewHeader = ({ title, cartModal }) =>
 function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
+
+
   const listProducts = products.map((product) =>
     <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
   )
+
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {listProducts}
@@ -148,6 +152,8 @@ class InfluencerInfo extends React.Component {
     this.state = {
       name: '',
       handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
     };
   }
 
@@ -159,6 +165,7 @@ class InfluencerInfo extends React.Component {
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
+          id: responseJson.ID,
         });
       })
       .catch((error) => {
@@ -166,13 +173,17 @@ class InfluencerInfo extends React.Component {
       });
   }
 
+
+
   render() {
     return (
       <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
         {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+              id: this.state.id,
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
               <Text>{this.state.name}</Text>
             </TouchableOpacity>
             <Text>
@@ -184,6 +195,8 @@ class InfluencerInfo extends React.Component {
     )
   }
 }
+
+
 export default class Feed extends React.Component {
   constructor() {
     super();
@@ -270,7 +283,6 @@ export default class Feed extends React.Component {
 
   render() {
 
-
     return (
       <View style={styles.container} >
         <ViewHeader title="FEED"
@@ -281,7 +293,7 @@ export default class Feed extends React.Component {
               handleCartClose={this.handleCartClose}
               updateQuantityInCart={this.updateQuantityInCart}
               removeLineItemInCart={this.removeLineItemInCart} />} />} />
-        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} />
+        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation = {this.props.navigation} />
       </View>
     );
   }
