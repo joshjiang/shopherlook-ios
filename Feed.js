@@ -13,17 +13,6 @@ const client = Client.buildClient({
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
 
-let sampleProduct = {
-  photo: require('./assets/450x200.png'),
-  seller: {
-    profilePhoto: require('./assets/50x50.png'),
-    name: "Lorem Ipsum",
-    handle: "@loremipsum"
-  },
-  price: 15,
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-};
-
 const ViewHeader = ({ title, cartModal }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
