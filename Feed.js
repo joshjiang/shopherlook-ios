@@ -9,6 +9,8 @@ import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
 
+
+
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
@@ -209,6 +211,10 @@ export default class Feed extends React.Component {
       shop: {}
     };
   }
+
+  static navigationOptions = {
+    title: 'Feed',
+  };
 
   componentDidMount() {
     client.product.fetchAll().then((res) => {
