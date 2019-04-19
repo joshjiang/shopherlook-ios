@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList } from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ let sampleProduct = {
   seller: {
     profilePhoto: require('./assets/cart.png'),
     name: "Lorem Ipsum",
-    handle: "@loremipsum" 
+    handle: "@loremipsum"
   },
   price: 15,
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
@@ -67,7 +67,7 @@ class Main extends Component {
       //might need to pass the search into the discovercontainer
       // <DiscoverContainer />
       <View style={styles.container}>
-        <DiscoverContainer products = {this.state.products}/>
+        <DiscoverContainer products={this.state.products} />
       </View>
     )
   }
@@ -85,9 +85,9 @@ const DiscoverContainer = ({ products }) =>
   <View>
     <TopHeader />
     <SearchDiscover />
-    <Filters />                                              
-    
-    <DiscoverFeed products={products} larry={"asfasdf"}/>
+    <Filters />
+
+    <DiscoverFeed products={products} larry={"asfasdf"} />
     <BottomHeader />
   </View>
 
@@ -107,6 +107,8 @@ const SearchDiscover = ({ }) =>
     <SearchBar
       placeholder="Search"
       lightTheme
+      onChangeText={this.updateSearch}
+      value={search}
     />
   </View>
 
@@ -132,17 +134,17 @@ const ClothesFilter = ({ }) =>
 
 
 
-  // sampleProduct
-  // not using DiscoverLooks as of now, trying to use the function 
-  // DiscoverFeed below
+// sampleProduct
+// not using DiscoverLooks as of now, trying to use the function 
+// DiscoverFeed below
 const DiscoverLooks = ({ product }) =>
   <View style={{ height: 590 }}>
     <ScrollView >
       <View style={styles.betweenLooks}>
         <View style={styles.looksStyle}>
-        
+
           <Look product={product.images[0].src} />
-          
+
         </View>
 
       </View>
@@ -151,64 +153,102 @@ const DiscoverLooks = ({ product }) =>
     </ScrollView>
   </View>
 
+const formatData = (data, numColumns) => {
+  const numberOfFullRows = Math.floor(data.length / numColumns);
+
+  let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
+  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
+    data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+    numberOfElementsLastRow++;
+  }
+
+  return data;
+};
+
+const numColumns = 3;
+
 function DiscoverFeed(props) {
   const products = props.products;
   const listProducts = products.map((product) =>
     <Look product={product} key={product.title}></Look>
   )
+
+  renderItem = ({ item, index }) => {
+    if (item.empty === true) {
+      return <View style={[styles.item, styles.itemInvisible]} />;
+    }
+
+    return (
+      <View style={styles.item}>
+        {item}
+      </View>
+    )
+  }
   return (
-
-    // <Look ></Look>
-    // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-    
-    //  <View style={styles.betweenLooks}>
-    // <View style={styles.looksStyle}>
-
-
     <View style={{ height: 480 }}>
-    
-    <ScrollView>
-
-   
-
-        {listProducts}
-
-
-      
-
-        
-      
-       
-
-    
-    </ScrollView>
-
-</View>
-    // <ScrollView >
-    //   <Look ></Look>
-    // </ScrollView>
+      <ScrollView >
+        <FlatList
+          data={formatData(listProducts, numColumns)}
+          style={styles.container}
+          renderItem={this.renderItem}
+          numColumns={numColumns}
+        />
+      </ScrollView>
+    </View>
   );
+  //   return (
+
+  //     // <Look ></Look>
+  //     // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+  //     //  <View style={styles.betweenLooks}>
+  //     // <View style={styles.looksStyle}>
+
+
+  //     <View style={{ height: 480 }}>
+
+  //     <ScrollView>
+
+
+
+  //         {listProducts}
+
+
+
+
+
+
+
+
+
+  //     </ScrollView>
+
+  // </View>
+  //     // <ScrollView >
+  //     //   <Look ></Look>
+  //     // </ScrollView>
+  //   );
 }
 
 const Look = ({ product }) =>
   <View>
-      {/* <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+    {/* <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
        style={{width: 400, height: 400}} />
      */}
     <LookPicture photo={product.images[0].src} />
-    
+
   </View>
 
 // photo
 
 const LookPicture = ({ photo }) =>
-  <Image source={{uri:photo}} resizeMode="contain" style={styles.lookPhoto} />
-{/* <View></View> */}
-  
+  <Image source={{ uri: photo }} resizeMode="contain" style={styles.lookPhoto} />
+{/* <View></View> */ }
+
 // photo
 
 // <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
-  // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
+// <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
 
 
 
@@ -313,14 +353,36 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 0
 
-},
-betweenLooks: {
+  },
+  betweenLooks: {
 
     marginTop: 5,
     marginBottom: 30,
     marginLeft: 40,
     marginRight: 40
-},
+  },
+
+  item: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 1,
+    height: Dimensions.get('window').width / numColumns, // approximate a square
+  },
+  itemInvisible: {
+    backgroundColor: 'transparent',
+  },
+  itemText: {
+    color: '#fff',
+  },
+  lookphoto: {
+    resizeMode: 'stretch', //or center?
+    height: 125,
+    width: 125
+  }
+
+
 });
 
 export default Main;
