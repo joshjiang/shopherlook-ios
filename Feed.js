@@ -4,7 +4,9 @@ import Cart from './Cart';
 import LineItem from './LineItem';
 import Client from 'shopify-buy';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from '../../node_modules/react-native-vector-icons/MaterialIcons';
 import * as base from './environment';
+import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
 
 const client = Client.buildClient({
@@ -36,11 +38,16 @@ const ViewHeader = ({ title, cartModal }) =>
     </View>
   </View>
 
-function LookFeed(props) {
+function LookFeed(props, passed) {
   const products = props.products;
+  const navigation = props.navigation;
+
+
   const listProducts = products.map((product) =>
-    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart}></Look>
+    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
   )
+
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {listProducts}
@@ -48,10 +55,10 @@ function LookFeed(props) {
   );
 }
 
-const Look = ({ product, addVariantToCart}) =>
+const Look = ({ product, addVariantToCart, navigation, passed}) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo product={product} />
+      <InfluencerInfo product={product} passed={passed} navigation={navigation} />
       <Text></Text>
     </View>
     <View>
@@ -61,15 +68,17 @@ const Look = ({ product, addVariantToCart}) =>
       </View>
       <LookPhoto photo={product.images[0].src} />
     </View>
-    <LookDescription title={product.title} description={product.description} />
+    <LookDescription title={product.title} description={product.description} navigation={navigation} />
   </View>
 
 const LookPhoto = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-const LookDescription = ({ description, title }) =>
+const LookDescription = ({ description, title, navigation }) =>
   <View>
-    <Text style={styles.lookTitle}>{title}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+      <Text style={styles.lookTitle}> {title} </Text>
+    </TouchableOpacity>
     <Text style={styles.lookDescription}>{description.split('Product Description ')[1]}</Text>
   </View>
 
@@ -144,8 +153,11 @@ class InfluencerInfo extends React.Component {
     this.state = {
       name: '',
       handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
     };
   }
+
 
   componentDidMount() {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
@@ -154,21 +166,27 @@ class InfluencerInfo extends React.Component {
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
+          id: responseJson.ID,
         });
       })
       .catch((error) => {
         console.error(error);
       });
   }
+
+
+
   render() {
     return (
       <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
         {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Text>
-              {this.state.name}
-            </Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+              id: this.state.id,
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
+              <Text>{this.state.name}</Text>
+            </TouchableOpacity>
             <Text>
               {this.state.handle}
             </Text>
@@ -178,6 +196,8 @@ class InfluencerInfo extends React.Component {
     )
   }
 }
+
+
 export default class Feed extends React.Component {
   constructor() {
     super();
@@ -267,7 +287,6 @@ export default class Feed extends React.Component {
 
   render() {
 
-
     return (
       <View style={styles.container} >
         <ViewHeader title="FEED"
@@ -278,7 +297,7 @@ export default class Feed extends React.Component {
               handleCartClose={this.handleCartClose}
               updateQuantityInCart={this.updateQuantityInCart}
               removeLineItemInCart={this.removeLineItemInCart} />} />} />
-        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} />
+        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation = {this.props.navigation} />
       </View>
     );
   }
