@@ -84,21 +84,21 @@ class ProfileContainer extends Component {
       render() {
         return (
             <View>
-                <ViewHeader />
+                {/* <ViewHeader /> */}
                 <InfluencerContainer pictures={this.state.pictures} handle = {this.props.handle} navigation = {this.props.navigation} person = {this.props.person}/>    
             </View>
         )
       }
 }
 
-const ViewHeader = ({ }) => //the header 
-    //<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-    // 
-    <View style={styles.welcomeContainer}>
-        <MaterialCommunityIcons name="square" size={32} color='white' />
-        <Text style={styles.blue}>PROFILE</Text>
-        <Ionicons name="md-lock" size={18} style={styles.blue} />
-    </View>
+// const ViewHeader = ({ }) => //the header 
+//     //<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+//     // 
+//     <View style={styles.welcomeContainer}>
+//         <MaterialCommunityIcons name="square" size={32} color='white' />
+//         <Text style={styles.blue}>PROFILE</Text>
+//         <Ionicons name="md-lock" size={18} style={styles.blue} />
+//     </View>
 
 //bio container: info about influencer; lookphotofeed: pics of all the objects
 const InfluencerContainer = ({ pictures, handle, navigation, person }) =>

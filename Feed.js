@@ -33,7 +33,7 @@ const ViewHeader = ({ title, cartModal }) =>
       <Text></Text>
     </View>
     <View style={{ width: 50 }}>
-      <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
+      {/* <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text> */}
     </View>
     <View style={{ width: 50 }}>
       {cartModal}
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 0,
     marginBottom: 20,
   },
   influencerPhoto: {
