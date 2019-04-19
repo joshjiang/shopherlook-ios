@@ -4,6 +4,7 @@ import Cart from './Cart';
 import LineItem from './LineItem';
 import Client from 'shopify-buy';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from '../../node_modules/react-native-vector-icons/MaterialIcons';
 import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
