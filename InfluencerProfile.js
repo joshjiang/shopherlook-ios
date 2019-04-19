@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Button , FlatList} from 'react-native';
 import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
@@ -252,8 +252,21 @@ function LookFeed(props) {
       console.log(pictures);
     return ( 
     //   <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> 
+    // <View>
+    //     <FlatList
+    //             numColumns={3}
+    //             data={listProducts}
+    //             renderItem={<LookPicture/> }
+    //         />
+    // </View>
+
         <ScrollView > 
             {listProducts}
+            {/* <FlatList
+                numColumns={3}
+                data={listProducts}
+                renderItem={<LookPicture/> }
+            /> */}
         </ScrollView>
 
     );
