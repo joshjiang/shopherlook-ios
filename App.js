@@ -15,7 +15,15 @@ import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 
 
 const FeedStack = createStackNavigator({
-  Feed: Feed,
+  // Feed: Feed,
+  Feed: {
+    screen: Feed,
+    header: "feed"
+    // navigationOptions: ({ navigation }) => ({
+    //   header: `Feed`,
+    // })
+  },
+
   InfluencerProfileScreen: InfluencerProfile,
   SinglePostScreen: SinglePost,
 });
@@ -27,9 +35,22 @@ const DiscoverStack = createStackNavigator({
 })
 
 const TabNavigator = createBottomTabNavigator({
+  // Feed: {
+  //   screen: FeedStack,
+  //   headerTitle: `Feed`
+  //   // navigationOptions: ({ navigation }) => ({
+  //   //   header: `Feed`,
+  //   // })
+  // },
   Feed: FeedStack,
   // FeedScreen: Feed,
   Discover: DiscoverStack,
+  // Discover: {
+  //   screen: DiscoverStack,
+  //   navigationOptions: ({ navigation }) => ({
+  //     title: `Discover`,
+  //   }),
+  // },
   Settings: Settings,
 
 },
@@ -44,6 +65,8 @@ const TabNavigator = createBottomTabNavigator({
     },
   }
 );
+
+//https://infinitered.github.io/ionicons-version-3-search/
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state;
