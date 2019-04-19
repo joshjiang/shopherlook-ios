@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React, { Component } from 'react'
+import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
 import LineItem from './LineItem'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import WebCheckout from './WebCheckout'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 class Cart extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
-        this.openCheckout = this.openCheckout.bind(this);
+        this.openCheckout = this.openCheckout.bind(this)
     }
 
     openCheckout() {
-        window.open(this.props.checkout.webUrl);
+        this.props.handleCartClose
+        console.log(this.props.checkout.webUrl)
+        this.props.navigation.navigate('WebCheckoutScreen', {
+            webUrl: this.props.checkout.webUrl,
+          });('WebCheckoutScreen')
     }
 
     render() {
         let line_items = this.props.checkout.lineItems.map((line_item) => {
-            console.log(line_item)
             return (
                 <LineItem
                     updateQuantityInCart={this.props.updateQuantityInCart}
@@ -81,7 +85,7 @@ class Cart extends Component {
                     backgroundColor: '#000',
                 }}
                     onPress={() => {
-                        { this.openCheckout };
+                        { this.openCheckout() };
                     }}>
                     <Text style={{ color: '#fff' }}>Checkout</Text>
                 </TouchableOpacity>

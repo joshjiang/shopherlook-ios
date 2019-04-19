@@ -84,7 +84,7 @@ class Main extends Component {
 const DiscoverContainer = ({ products }) =>
   <View>
     <TopHeader />
-    <SearchDiscover />
+    {/* <SearchDiscover /> */}
     <Filters />
 
     <DiscoverFeed products={products} larry={"asfasdf"} />
