@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
+
 
 
 const client = Client.buildClient({
@@ -32,6 +33,9 @@ let sampleProduct = {
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
 
+// 36eb3e596449687068dfca9da3dc8d3e
+
+
 
 
 class Main extends Component {
@@ -51,7 +55,8 @@ class Main extends Component {
       });
     });
   }
-
+  // make call to api
+  // store in local component
 
   render() {
     console.log(this.state.products);
@@ -62,20 +67,27 @@ class Main extends Component {
       //might need to pass the search into the discovercontainer
       // <DiscoverContainer />
       <View style={styles.container}>
-        <DiscoverContainer products = {this.state.products} navigation = {this.props.navigation}/>
+        <DiscoverContainer products = {this.state.products}/>
       </View>
     )
   }
 }
+{/* <Image
+          style={{width: 50, height: 50}}
+          source={require('./img/supreme.jpg')}
+    /> */}
 
-  
-const DiscoverContainer = ({products, navigation }) =>
-    <View>
-      <TopHeader />
-      <SearchDiscover />
-      <Filters />                                              
-      
-      <DiscoverFeed products={products} navigation = {navigation} larry={"asfasdf"}/>
+
+// <DiscoverLooks sampleProduct={sampleProduct} />
+// <DiscoverFeed products={products} larry={"asfasdf"}/>
+// looks
+const DiscoverContainer = ({ products }) =>
+  <View>
+    <TopHeader />
+    <SearchDiscover />
+    <Filters />                                              
+    
+    <DiscoverFeed products={products} larry={"asfasdf"}/>
     <BottomHeader />
   </View>
 
@@ -141,9 +153,8 @@ const DiscoverLooks = ({ product }) =>
 
 function DiscoverFeed(props) {
   const products = props.products;
-  const navigation = props.navigation;
   const listProducts = products.map((product) =>
-    <Look product={product} key={product.title} navigation={navigation}></Look>
+    <Look product={product} key={product.title}></Look>
   )
   return (
 
@@ -179,23 +190,19 @@ function DiscoverFeed(props) {
   );
 }
 
-const Look = ({ product, navigation }) =>
+const Look = ({ product }) =>
   <View>
       {/* <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
        style={{width: 400, height: 400}} />
      */}
-    <LookPicture photo={product.images[0].src} navigation={navigation} />
+    <LookPicture photo={product.images[0].src} />
     
   </View>
 
 // photo
 
-const LookPicture = ({ photo, navigation }) =>
-
-  <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-
-  <Image source={{uri: photo}} resizeMode="contain" style={styles.lookPhoto} />
-  </TouchableOpacity>
+const LookPicture = ({ photo }) =>
+  <Image source={{uri:photo}} resizeMode="contain" style={styles.lookPhoto} />
 {/* <View></View> */}
   
 // photo
