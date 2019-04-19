@@ -1,10 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, ScrollView, View, Image, Modal, TouchableOpacity, Alert } from 'react-native';
+import Cart from './Cart';
+import LineItem from './LineItem';
 import Client from 'shopify-buy';
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as base from './environment';
 import { Button } from 'react-native-elements';
-
+var Buffer = require('buffer/').Buffer;
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
@@ -22,7 +24,7 @@ let sampleProduct = {
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 };
 
-const ViewHeader = ({ title }) =>
+const ViewHeader = ({ title, cartModal }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
       <Text></Text>
@@ -31,59 +33,56 @@ const ViewHeader = ({ title }) =>
       <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
     </View>
     <View style={{ width: 50 }}>
-      <Ionicons name="md-cart" size={27} style={{}} />
+      {cartModal}
     </View>
   </View>
 
 function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
+
+
   const listProducts = products.map((product) =>
-    <Look product={product} passed = {passed} key={product.title} navigation = {navigation}></Look>
+    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
   )
+
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {listProducts}
     </ScrollView>
   );
 }
-function Hello(props) {
-  return <div>Hello {props.name}</div>
-}
 
-const Look = ({ product, navigation }, passed ) =>
+const Look = ({ product, addVariantToCart, navigation, passed}) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo influencer={sampleProduct.seller} passed = {passed} navigation = {navigation} />
+      <InfluencerInfo product={product} passed={passed} navigation={navigation} />
       <Text></Text>
     </View>
     <View>
       <View style={{ padding: 10, zIndex: 10, position: 'absolute', bottom: 0, right: 0, left: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text></Text>
-        <CartAddButton price={product.variants[0].price} />
+        <CartAddButton product={product} addVariantToCart={addVariantToCart} price={product.variants[0].price} />
       </View>
       <LookPhoto photo={product.images[0].src} />
     </View>
-    <LookDescription title={product.title} description={product.description} navigation = {navigation}/>
+    <LookDescription title={product.title} description={product.description} navigation={navigation} />
   </View>
 
 const LookPhoto = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-const LookDescription = ({ description, title, navigation}) =>
+const LookDescription = ({ description, title, navigation }) =>
   <View>
-      <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+    <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
       <Text style={styles.lookTitle}> {title} </Text>
-      </TouchableOpacity>
-          
-          
-        
-    
-    <Text style={styles.lookDescription}>{description}</Text>
+    </TouchableOpacity>
+    <Text style={styles.lookDescription}>{description.split('Product Description ')[1]}</Text>
   </View>
 
-const CartAddButton = ({ price }) =>
-  <View style={{
+const CartAddButton = ({ price, product, addVariantToCart}) =>
+  <TouchableOpacity style={{
     marginRight: 15,
     borderRadius: 4,
     borderWidth: 0.5,
@@ -94,29 +93,109 @@ const CartAddButton = ({ price }) =>
     paddingBottom: 10,
     backgroundColor: '#ffffffEE',
     zIndex: 10
-  }}>
+  }}
+    onPress={
+      () => addVariantToCart(product.variants[0].id, 1)
+    }>
     <Text>
       +  ${price}
     </Text>
-  </View>
+  </TouchableOpacity>
 
-const InfluencerInfo = ({ influencer, navigation}, {passed}) =>
-  <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
-    <Image source={influencer.profilePhoto} style={styles.influencerPhoto} />
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-      <TouchableOpacity onPress={() => navigation.navigate('InfluencerProfileScreen')}>
-      <Text>{influencer.name}</Text>
-      </TouchableOpacity>
-        
-          
-       
-        <Text>
-          {influencer.handle}
-        </Text>
+class CartModal extends Component {
+  state = {
+    modalVisible: false,
+  };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+  render() {
+    return (
+      <View style={{ marginTop: 22, }}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={{ marginTop: 40, }}>
+            <View >
+              <TouchableOpacity
+                style={{ zIndex: 100 }}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text style={{ fontSize: 30, color: '#00000088', fontWeight: 'bold', textAlign: 'right', paddingRight: 30, top: 45 }}>x</Text></TouchableOpacity>
+              {this.props.cart}
+            </View>
+          </View>
+        </Modal>
+
+        <TouchableOpacity
+          onPress={() => {
+            this.setModalVisible(true);
+          }}>
+          <Icon name="shopping-cart" size={30} />
+        </TouchableOpacity>
       </View>
-    </View >
-  </View >
+    );
+  }
+}
+
+class InfluencerInfo extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      name: '',
+      handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+    };
+  }
+
+
+  componentDidMount() {
+    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          name: responseJson.first_name + ' ' + responseJson.last_name,
+          handle: responseJson.instagram_handle,
+          id: responseJson.ID,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+  render() {
+    return (
+      <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
+        {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+              id: this.state.id,
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
+              <Text>{this.state.name}</Text>
+            </TouchableOpacity>
+            <Text>
+              {this.state.handle}
+            </Text>
+          </View>
+        </View >
+      </View >
+    )
+  }
+}
+
 
 export default class Feed extends React.Component {
   constructor() {
@@ -124,11 +203,14 @@ export default class Feed extends React.Component {
 
     this.state = {
       products: [],
+      isCartOpen: false,
+      checkout: { lineItems: [] },
+      shop: {}
     };
   }
 
   componentDidMount() {
-    return client.product.fetchAll().then((res) => {
+    client.product.fetchAll().then((res) => {
       this.setState({
         products: res,
       });
@@ -136,22 +218,88 @@ export default class Feed extends React.Component {
       console.log('There has been a problem with your fetch operation: ' + error.message);
       // ADD THIS THROW error
       throw error;
-    });;
+    });
+
+    client.checkout.create().then((res) => {
+      this.setState({
+        checkout: res,
+      });
+      console.log(this.state.checkout.id);
+    }).catch(function (error) {
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+      // ADD THIS THROW error
+      throw error;
+    });
+
+    client.shop.fetchInfo().then((res) => {
+      this.setState({
+        shop: res,
+      });
+    }).catch(function (error) {
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+      // ADD THIS THROW error
+      throw error;
+    });
   }
+
+  addVariantToCart(variantId, quantity) {
+
+    const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10) }]
+    const checkoutId = this.state.checkout.id
+
+    return client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
+      this.setState({
+        checkout: res,
+      });
+    });
+  }
+
+  updateQuantityInCart(lineItemId, quantity) {
+    const checkoutId = this.state.checkout.id
+    const lineItemsToUpdate = [{ id: lineItemId, quantity: parseInt(quantity, 10) }]
+
+    return client.checkout.updateLineItems(checkoutId, lineItemsToUpdate).then(res => {
+      this.setState({
+        checkout: res,
+      });
+    });
+  }
+
+  removeLineItemInCart(lineItemId) {
+    const checkoutId = this.state.checkout.id
+    return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
+      this.setState({
+        checkout: res,
+      });
+    });
+  }
+
+  handleCartClose() {
+    this.setState({
+      isCartOpen: false,
+    });
+  }
+
 
   render() {
 
-
     return (
-      <View style={styles.container}>
-        <ViewHeader title="FEED" />
-        <LookFeed products={this.state.products} passed = {this} navigation = {this.props.navigation} />
+      <View style={styles.container} >
+        <ViewHeader title="FEED"
+          cartModal={<CartModal cart={
+            <Cart
+              checkout={this.state.checkout}
+              isCartOpen={this.state.isCartOpen}
+              handleCartClose={this.handleCartClose}
+              updateQuantityInCart={this.updateQuantityInCart}
+              removeLineItemInCart={this.removeLineItemInCart} />} />} />
+        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation = {this.props.navigation} />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
