@@ -226,9 +226,16 @@ function LookFeed(props) {
         }
 
         return (
-        <View style={styles.item}> 
+        // <View>
+        //     <View style={{ padding: 10, zIndex: 10, position: 'absolute', bottom: 0, right: 0, left: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        //         <CartAddButton pictures={pictures} addVariantToCart={addVariantToCart} price={product.variants[0].price} />
+        //     </View>
+
+            <View style={styles.item}> 
             {item} 
-        </View>
+            </View>
+        // </View>
+        
         )
     }
     return ( 
@@ -405,8 +412,8 @@ const styles = StyleSheet.create({
     },
     lookphoto: {
         resizeMode: 'stretch', //or center?
-        height: 150,
-        width: 150
+        height: 125,
+        width: 125
     }
 
 });
