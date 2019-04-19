@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Button , FlatList} from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList} from 'react-native';
 import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
@@ -37,10 +37,6 @@ class InfluencerProfile extends Component {
         return (
             <View style={styles.container}>
                 <ProfileContainer products={this.state.products} handle = {handle} navigation = {this.props.navigation} person = {person}/>
-                
-                {/* <Text>
-                    {person}
-                </Text> */}
             </View>
         )
     }
@@ -105,11 +101,7 @@ const ViewHeader = ({ }) => //the header
 const InfluencerContainer = ({ pictures, handle, navigation, person }) =>
     <View>
         <BioContainer pictures={pictures} handle = {handle} person = {person}/>
-        {/* <LookPhotoFeed pictures={pictures} handle = {handle} navigation = {navigation}/>  */}
-        <LookFeed pictures={pictures} handle = {handle} navigation = {navigation}/> 
-
-        {/* <LookPhotoFeedFunction product={product} handle = {handle} navigation = {navigation}/> */}
-        
+        <LookFeed pictures={pictures} handle = {handle} navigation = {navigation}/>         
     </View>
 
 // ProfileIcons: that light blue bar with influencer info 
@@ -127,30 +119,6 @@ const ProfileIcons = ({pictures, handle, person}) =>
         <FuncIcons />
     </View>
 
-
-
-//TODO: 
-// const InfluencerInfo = ({ pictures , handle }) =>
-    
-//     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-
-//         <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
-
-//         <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
-            
-//             {/* TODO: Pull Influencer Name */}
-//             <Text style={styles.leftAl} >
-//                 Lawrence Zhang
-//             </Text>
-
-//             {/* TODO: Pull Influencer Handle */}
-//             <Text style={styles.leftAl} >
-//                 {handle}
-//             </Text>
-
-//         </View>
-//     </View>
-
 class InfluencerInfo extends Component {
     constructor() {
         super();
@@ -162,7 +130,7 @@ class InfluencerInfo extends Component {
     }
 
       componentDidMount() {
-        console.log("the id: " + this.props.person);
+        // console.log("the id: " + this.props.person);
 
         return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + this.props.person)
           .then((response) => response.json())
@@ -188,24 +156,14 @@ class InfluencerInfo extends Component {
                 <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
 
                 <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
-                    
-                    {/* TODO: Pull Influencer Name */}
-                    <Text style={styles.leftAl} >
-                        {this.state.name}
-                    </Text>
 
-                    {/* TODO: Pull Influencer Handle */}
-                    <Text style={styles.leftAl} >
-                        {this.state.handle}
-                    </Text>
+                    <Text style={styles.leftAl} > {this.state.name} </Text>
+                    <Text style={styles.leftAl} > {this.state.handle} </Text>
 
                 </View>
             </View>
-        )
-      }
-
+        ) }
 }
-
 
 //INSTA TODO: link to insta page (maybe need insta API)
 const FuncIcons = ({ }) =>
@@ -239,36 +197,49 @@ const InfluencerBio = ({ }) =>
     </View>
 
 //<Ionicons name="md-lock" size={40}/>   
+const formatData = (data, numColumns) => {
+    const numberOfFullRows = Math.floor(data.length / numColumns);
+  
+    let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
+    while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
+      data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+      numberOfElementsLastRow++;
+    }
+  
+    return data;
+};
 
+const numColumns = 3;
 
 function LookFeed(props) {
     const pictures = props.pictures;
     const navigation = props.navigation;
   
-  
     const listProducts = pictures.map((picture) =>
       <LookPicture picture={picture} key={picture.date} navigation={navigation}/> )
 
       console.log(pictures);
+
+    renderItem = ({item, index}) => {
+        if (item.empty === true) {
+            return <View style={[styles.item, styles.itemInvisible]} />;
+        }
+
+        return (
+        <View style={styles.item}> 
+            {item} 
+        </View>
+        )
+    }
     return ( 
-    //   <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> 
-    // <View>
-    //     <FlatList
-    //             numColumns={3}
-    //             data={listProducts}
-    //             renderItem={<LookPicture/> }
-    //         />
-    // </View>
-
         <ScrollView > 
-            {listProducts}
-            {/* <FlatList
-                numColumns={3}
-                data={listProducts}
-                renderItem={<LookPicture/> }
-            /> */}
+            <FlatList
+                data={formatData(listProducts, numColumns)}
+                style={styles.container}
+                renderItem={this.renderItem}
+                numColumns={numColumns}
+            />
         </ScrollView>
-
     );
   }
 
@@ -280,12 +251,9 @@ const LookPicture = ({picture, navigation}) =>
       
 const LookPhoto = ({photo}) => //resizeMode="cover"  
     <Image
-    source={{
-    uri: photo,
-    }}
-    style={{width: 100, height: 100}}
+    source={{ uri: photo}}
+    style={styles.lookphoto}
     />
-
 
 const CartAddButton = ({ }) =>
     <Ionicons name="md-lock" size={10} />
@@ -421,6 +389,25 @@ const styles = StyleSheet.create({
         marginTop: 5,
         backgroundColor: 'cornflowerblue'
     },
+    item: {
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        margin: 1,
+        height: Dimensions.get('window').width / numColumns, // approximate a square
+    },
+      itemInvisible: {
+        backgroundColor: 'transparent',
+    },
+    itemText: {
+        color: '#fff',
+    },
+    lookphoto: {
+        resizeMode: 'stretch', //or center?
+        height: 150,
+        width: 150
+    }
 
 });
 
@@ -492,4 +479,26 @@ export default InfluencerProfile;
 
 //             </View>
 //         </ScrollView>
+//     </View>
+
+//TODO: 
+// const InfluencerInfo = ({ pictures , handle }) =>
+    
+//     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+
+//         <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
+
+//         <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
+            
+//             {/* TODO: Pull Influencer Name */}
+//             <Text style={styles.leftAl} >
+//                 Lawrence Zhang
+//             </Text>
+
+//             {/* TODO: Pull Influencer Handle */}
+//             <Text style={styles.leftAl} >
+//                 {handle}
+//             </Text>
+
+//         </View>
 //     </View>
