@@ -17,6 +17,9 @@ class InfluencerProfile extends Component {
           products: [],
         };
     }
+    static navigationOptions = {
+        title: 'Profile',
+    };
 
     componentDidMount() {
 
@@ -218,23 +221,15 @@ function LookFeed(props) {
     const listProducts = pictures.map((picture) =>
       <LookPicture picture={picture} key={picture.date} navigation={navigation}/> )
 
-      console.log(pictures);
-
     renderItem = ({item, index}) => {
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
 
         return (
-        // <View>
-        //     <View style={{ padding: 10, zIndex: 10, position: 'absolute', bottom: 0, right: 0, left: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        //         <CartAddButton pictures={pictures} addVariantToCart={addVariantToCart} price={product.variants[0].price} />
-        //     </View>
-
             <View style={styles.item}> 
             {item} 
             </View>
-        // </View>
         
         )
     }
