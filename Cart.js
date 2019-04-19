@@ -28,7 +28,7 @@ class Cart extends Component {
         });
 
         return (
-            <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20, flex: 1 }}>
+            <View style={{ paddingTop: 10, paddingLeft: 0, paddingRight: 0, flex: 1 }}>
                 <View style={{ height: 30 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
                         <Text></Text>
@@ -36,7 +36,7 @@ class Cart extends Component {
                         <TouchableOpacity><Text></Text></TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ height: 600 }}>
+                <View style={{ height: 500 }}>
                     <ScrollView style={{ flex: 1, flexDirection: 'column', paddingTop: 30 }}>
                         {line_items}
                     </ScrollView>
@@ -72,8 +72,8 @@ class Cart extends Component {
                     </View>
                 </View>
                 <TouchableOpacity style={{
-                    paddingLeft: 20,
-                    paddingRight: 20,
+                    marginLeft: 20,
+                    marginRight: 20,
                     alignItems: 'center',
                     height: 50,
                     padding: 10,

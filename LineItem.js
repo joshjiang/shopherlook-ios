@@ -15,12 +15,12 @@ const LineItem = ({ line_item, removeLineItemInCart }) =>
             </View>
             <View>
                 <View>
-                    <Text style={{width:100}}>$ {(line_item.variant.price)}</Text>
+                    <Text style={{width:70, paddingTop:10}}>$ {(line_item.variant.price)}</Text>
                 </View>
             </View>
             <TouchableOpacity
                 onPress={() => removeLineItemInCart(line_item.id)}>
-                <Text style={{ fontSize: 20 }}>×</Text>
+                <Text style={{color:'red', fontSize: 30, paddingRight:30}}>×</Text>
             </TouchableOpacity>
         </View>
     </View>
