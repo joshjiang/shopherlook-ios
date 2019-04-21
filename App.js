@@ -24,6 +24,10 @@ const FeedStack = createStackNavigator({
 });
 
 const DiscoverStack = createStackNavigator({
+  DiscoverScreen: {
+    screen: Main,
+    header: "discover"
+  },
   DiscoverScreen: Main,
   SinglePostScreen: SinglePost,
   InfluencerProfileScreen: InfluencerProfile,
@@ -55,7 +59,7 @@ const TabNavigator = createBottomTabNavigator({
         getTabBarIcon(navigation, focused, tintColor),
     }),
     tabBarOptions: {
-      activeTintColor: 'tomato',
+      activeTintColor: 'purple',
       inactiveTintColor: 'gray',
     },
   }

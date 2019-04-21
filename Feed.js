@@ -16,17 +16,6 @@ const client = Client.buildClient({
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
 
-let sampleProduct = {
-  photo: require('./assets/450x200.png'),
-  seller: {
-    profilePhoto: require('./assets/50x50.png'),
-    name: "Lorem Ipsum",
-    handle: "@loremipsum"
-  },
-  price: 15,
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-};
-
 const ViewHeader = ({ title, children }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
@@ -116,7 +105,7 @@ class CartModal extends Component {
 
   render() {
     return (
-      <View style={{ marginTop: 22, }}>
+      <View style={{ marginTop: 0, }}>
         <Modal
           animationType="slide"
           transparent={false}
@@ -124,7 +113,7 @@ class CartModal extends Component {
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}>
-          <View style={{ marginTop: 40, }}>
+          <View style={{ marginTop: 0, }}>
             <View >
               <TouchableOpacity
                 style={{ zIndex: 100 }}
@@ -137,25 +126,39 @@ class CartModal extends Component {
                 navigation={this.props.navigation}
                 checkout={this.props.checkout}
                 isCartOpen={this.props.isCartOpen}
-                handleCartClose={this.props.handleCartClose}
+                handleCartClose={this.setModalVisible.bind(this)}
                 removeLineItemInCart={this.props.removeLineItemInCart} />
             </View>
           </View>
         </Modal>
 
         <TouchableOpacity
+          alignItems='center'
           onPress={() => {
             this.setModalVisible(true);
-            this.props.handleCartClose;
             console.log(this.props.isCartOpen);
           }}>
+          {/* <View style={{
+            height: 20,
+            width: 20,
+            borderRadius: 10,
+            borderWidth: 0.5,
+            borderColor: '#fff',
+            top: 30,
+            left:18,
+            zIndex: 10,
+          }}> */}
+            {/* <Text style={{
+              textAlign: 'center',
+              color: '#fff'
+            }}></Text> */}
+          {/* </View> */}
           <Icon name="shopping-cart" size={30} />
         </TouchableOpacity>
       </View>
     );
   }
 }
-
 class InfluencerInfo extends React.Component {
   constructor() {
     super();
