@@ -215,7 +215,7 @@ function DiscoverFeed(props) {
     )
   }
   return (
-    <View style={{ height: 480 }}>
+    <View >
       <ScrollView >
         <FlatList
           data={formatData(listProducts, numColumns)}
@@ -282,7 +282,7 @@ class Disc extends Component {
           value={search}
         />
 
-        <View style={{ height: 480 }}>
+        <View style={{ height: 1100 }}>
           <ScrollView >
             <FlatList
               data={formatData(listProducts, numColumns)}
@@ -363,18 +363,6 @@ const LookPicture = ({ photo }) =>
 // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 const BottomHeader = ({ }) =>
   <View style={styles.bottomheaderbox}>
     <View style={styles.bottomheader}>
@@ -447,8 +435,8 @@ const styles = StyleSheet.create({
   },
   lookPhoto: {
     resizeMode: 'stretch',
-    height: 100,
-    width: 100
+    height: 125,
+    width: 125
   },
 
 
