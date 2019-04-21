@@ -88,9 +88,9 @@ class Main extends Component {
 // looks
 const DiscoverContainer = ({ products, navigation }) =>
   <View>
-    <TopHeader />
+    {/* <TopHeader /> */}
     {/* <SearchDiscover search={search} /> */}
-    <Filters />
+    {/* <Filters /> */}
 
     <Disc products={products} larry={"asfasdf"} navigation = {navigation} />
     {/* <BottomHeader /> */}
