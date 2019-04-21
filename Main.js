@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList , TouchableOpacity} from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ const client = Client.buildClient({
 });
 
 
-let allProducts = ""
+let allProducts = "";
 client.product.fetchAll().then((products) => {
   allProducts = products;
 });
@@ -44,6 +44,9 @@ class Main extends Component {
     products: [],
   };
 
+  static navigationOptions = {
+    title: 'Discover',
+  };
   //updateSearch = search => {
   //  this.setState({ search });
   //};
@@ -67,7 +70,7 @@ class Main extends Component {
       //might need to pass the search into the discovercontainer
       // <DiscoverContainer />
       <View style={styles.container}>
-        <DiscoverContainer products={this.state.products} />
+        <DiscoverContainer products={this.state.products} navigation = {this.props.navigation} />
       </View>
     )
   }
@@ -83,21 +86,21 @@ class Main extends Component {
 // <DiscoverLooks sampleProduct={sampleProduct} />
 // <DiscoverFeed products={products} larry={"asfasdf"}/>
 // looks
-const DiscoverContainer = ({ products, search }) =>
+const DiscoverContainer = ({ products, navigation }) =>
   <View>
     <TopHeader />
     {/* <SearchDiscover search={search} /> */}
     <Filters />
 
-    <Disc products={products} larry={"asfasdf"} />
-    <BottomHeader />
+    <Disc products={products} larry={"asfasdf"} navigation = {navigation} />
+    {/* <BottomHeader /> */}
   </View>
 
 const TopHeader = ({ }) =>
 
   <View style={styles.header}>
     <Feather name="align-justify" size={32} color="white" />
-    <Text style={{ fontSize: 18 }} >DISCOVER</Text>
+    {/* <Text style={{ fontSize: 18 }} >DISCOVER</Text> */}
     <MaterialCommunityIcons name="cart" size={32} color="black" />
   </View>
 
@@ -264,7 +267,7 @@ class Disc extends Component {
 )
 
     const listProducts = products.map((product) => 
-      <Look product={product} key={product.title}></Look>
+      <Look product={product} key={product.title} navigation = {this.props.navigation}></Look>
     )
 
 
@@ -340,18 +343,17 @@ class Disc extends Component {
 //   );
 
 
-const Look = ({ product }) =>
-  <View>
-    {/* <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
-       style={{width: 400, height: 400}} />
-     */}
-    <LookPicture photo={product.images[0].src} />
+const Look = ({ product , navigation}) =>
 
-  </View>
+     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+        {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
+        <LookPicture photo={product.images[0].src} />
+    </TouchableOpacity>
 
 // photo
 
 const LookPicture = ({ photo }) =>
+
   <Image source={{ uri: photo }} resizeMode="contain" style={styles.lookPhoto} />
 {/* <View></View> */ }
 
@@ -394,7 +396,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 5,
     marginBottom: 20,
     marginRight: 10,
     marginLeft: 10
