@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList} from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList, Linking} from 'react-native';
 import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
@@ -153,15 +153,36 @@ class InfluencerInfo extends Component {
       }
 
       render() {
+
+        const str = this.state.handle;
+        // str = str.slice(1);
+        let url = '';
+        if (str.charAt(0) == '@') {
+             url = "https://www.instagram.com/" + str.slice(1);
+        } 
+        else {
+             url = "https://www.instagram.com/" + str;
+        }
+
         return (
+
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
                 <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
 
                 <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
+                    {/* EDIT */}
+                    
+                    <Text style={styles.leftAl}
+                        onPress={() => Linking.openURL(url)}>
+                        {this.state.name}
+                    </Text>
 
-                    <Text style={styles.leftAl} > {this.state.name} </Text>
-                    <Text style={styles.leftAl} > {this.state.handle} </Text>
+                    {/* <Text style={styles.leftAl} > {this.state.name} </Text> */}
+                    <Text style={styles.leftAl} 
+                        onPress={() => Linking.openURL(url)}>
+                    {this.state.handle} 
+                    </Text>
 
                 </View>
             </View>
