@@ -12,8 +12,7 @@ class Cart extends Component {
     }
 
     openCheckout() {
-        this.props.handleCartClose
-        console.log(this.props.checkout.webUrl)
+        this.props.handleCartClose(false)
         this.props.navigation.navigate('WebCheckoutScreen', {
             webUrl: this.props.checkout.webUrl,
           });('WebCheckoutScreen')

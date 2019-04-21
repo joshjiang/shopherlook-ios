@@ -7,6 +7,7 @@ class WebCheckout extends Component {
       <WebView
         source={{uri: this.props.navigation.getParam('webUrl', '')}}
         style={{flex:1}}
+        onError={console.log('webview load error')}
       />
     );
   }

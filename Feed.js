@@ -135,7 +135,7 @@ class CartModal extends Component {
                 navigation={this.props.navigation}
                 checkout={this.props.checkout}
                 isCartOpen={this.props.isCartOpen}
-                handleCartClose={this.props.handleCartClose}
+                handleCartClose={this.setModalVisible.bind(this)}
                 removeLineItemInCart={this.props.removeLineItemInCart} />
             </View>
           </View>
@@ -144,7 +144,6 @@ class CartModal extends Component {
         <TouchableOpacity
           onPress={() => {
             this.setModalVisible(true);
-            this.props.handleCartClose;
             console.log(this.props.isCartOpen);
           }}>
           <Icon name="shopping-cart" size={30} />
