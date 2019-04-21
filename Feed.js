@@ -9,6 +9,8 @@ import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
 
+
+
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
@@ -31,7 +33,7 @@ const ViewHeader = ({ title, children }) =>
       <Text></Text>
     </View>
     <View style={{ width: 50 }}>
-      <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
+      {/* <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text> */}
     </View>
     <View style={{ width: 50 }}>
       {children}
@@ -223,6 +225,10 @@ export default class Feed extends React.Component {
     this.removeLineItemInCart = this.removeLineItemInCart.bind(this);
   }
 
+  static navigationOptions = {
+    title: 'Feed',
+  };
+
   componentDidMount() {
     client.product.fetchAll().then((res) => {
       this.setState({
@@ -332,7 +338,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 0,
     marginBottom: 20,
   },
   influencerPhoto: {

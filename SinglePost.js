@@ -123,6 +123,10 @@ class SinglePost extends Component {
     };
   }
 
+  static navigationOptions = {
+    title: 'Item',
+  };
+
   componentDidMount() {
     return client.product.fetchAll().then((res) => {
       
