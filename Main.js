@@ -40,13 +40,13 @@ let sampleProduct = {
 
 class Main extends Component {
   state = {
-    search: '',
+    // search: '',
     products: [],
   };
 
-  updateSearch = search => {
-    this.setState({ search });
-  };
+  //updateSearch = search => {
+  //  this.setState({ search });
+  //};
 
   componentDidMount() {
     client.product.fetchAll().then((res) => {
@@ -61,7 +61,7 @@ class Main extends Component {
   render() {
     console.log(this.state.products);
 
-    const { search } = this.state;
+    //const { search } = this.state;
     return (
 
       //might need to pass the search into the discovercontainer
@@ -72,6 +72,8 @@ class Main extends Component {
     )
   }
 }
+
+
 {/* <Image
           style={{width: 50, height: 50}}
           source={require('./img/supreme.jpg')}
@@ -81,13 +83,13 @@ class Main extends Component {
 // <DiscoverLooks sampleProduct={sampleProduct} />
 // <DiscoverFeed products={products} larry={"asfasdf"}/>
 // looks
-const DiscoverContainer = ({ products }) =>
+const DiscoverContainer = ({ products, search }) =>
   <View>
     <TopHeader />
-    <SearchDiscover />
+    {/* <SearchDiscover search={search} /> */}
     <Filters />
 
-    <DiscoverFeed products={products} larry={"asfasdf"} />
+    <Disc products={products} larry={"asfasdf"} />
     <BottomHeader />
   </View>
 
@@ -102,16 +104,41 @@ const TopHeader = ({ }) =>
 
 // onChangeText={this.updateSearch}
 // value={search}
-const SearchDiscover = ({ }) =>
-  <View style={styles.searchStyle}>
-    <SearchBar
-      placeholder="Search"
-      lightTheme
-      onChangeText={this.updateSearch}
-      value={search}
-    />
-  </View>
+// const SearchDiscover = ({ search }) =>
+//   <View style={styles.searchStyle}>
+//     <SearchBar
+//       placeholder="Search"
+//       lightTheme
+//       onChangeText={this.updateSearch}
+//       value={search}
 
+
+//     />
+//   </View>
+
+class ImplementSearch extends Component {
+
+  state = {
+    search: '',
+  };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+  render() {
+    const { search } = this.state;
+
+    return (
+      <SearchBar
+        placeholder="Search"
+        lightTheme
+        onChangeText={this.updateSearch}
+        value={search}
+      />
+    )
+  }
+}
 
 const Filters = ({ }) =>
   <View style={styles.filterStyle}>
@@ -196,39 +223,122 @@ function DiscoverFeed(props) {
       </ScrollView>
     </View>
   );
-  //   return (
-
-  //     // <Look ></Look>
-  //     // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
-  //     //  <View style={styles.betweenLooks}>
-  //     // <View style={styles.looksStyle}>
 
 
-  //     <View style={{ height: 480 }}>
-
-  //     <ScrollView>
-
-
-
-  //         {listProducts}
-
-
-
-
-
-
-
-
-
-  //     </ScrollView>
-
-  // </View>
-  //     // <ScrollView >
-  //     //   <Look ></Look>
-  //     // </ScrollView>
-  //   );
 }
+
+class Disc extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      search: '',
+    }
+  }
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+  renderItem = ({ item, index }) => {
+    if (item.empty === true) {
+      return <View style={[styles.item, styles.itemInvisible]} />;
+    }
+
+    return (
+      <View style={styles.item}>
+        {item}
+      </View>
+    )
+  }
+
+  render() {
+    let products = this.props.products;
+
+    const { search } = this.state;
+
+    products = products.filter(
+      (product) => {
+          return product.title.includes(search) || product.title.toLowerCase().includes(search);
+      }
+)
+
+    const listProducts = products.map((product) => 
+      <Look product={product} key={product.title}></Look>
+    )
+
+
+    console.log(search);
+
+    return (
+      <View>
+        <SearchBar
+          placeholder="Search"
+          lightTheme
+          onChangeText={this.updateSearch}
+          value={search}
+        />
+
+        <View style={{ height: 480 }}>
+          <ScrollView >
+            <FlatList
+              data={formatData(listProducts, numColumns)}
+              style={styles.container}
+              renderItem={this.renderItem}
+              numColumns={numColumns}
+            />
+          </ScrollView>
+        </View>
+
+      </View>
+
+
+    )
+  }
+}
+
+
+
+
+
+
+
+
+
+
+//   return (
+
+//     // <Look ></Look>
+//     // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+//     //  <View style={styles.betweenLooks}>
+//     // <View style={styles.looksStyle}>
+
+
+//     <View style={{ height: 480 }}>
+
+//     <ScrollView>
+
+
+
+//         {listProducts}
+
+
+
+
+
+
+
+
+
+//     </ScrollView>
+
+// </View>
+//     // <ScrollView >
+//     //   <Look ></Look>
+//     // </ScrollView>
+//   );
+
 
 const Look = ({ product }) =>
   <View>
