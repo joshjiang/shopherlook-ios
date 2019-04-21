@@ -276,57 +276,6 @@ class CartModal extends Component {
   }
 }
 
-class InfluencerInfo extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      name: '',
-      handle: '',
-      id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-    };
-  }
-
-
-  componentDidMount() {
-    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          name: responseJson.first_name + ' ' + responseJson.last_name,
-          handle: responseJson.instagram_handle,
-          id: responseJson.ID,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-
-
-  render() {
-    return (
-      <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
-        {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-              id: this.state.id,
-              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-            })}>
-              <Text>{this.state.name}</Text>
-            </TouchableOpacity>
-            <Text>
-              {this.state.handle}
-            </Text>
-          </View>
-        </View >
-      </View >
-    )
-  }
-}
 
 
 export default class Feed extends React.Component {
