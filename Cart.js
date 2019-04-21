@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React, { Component } from 'react'
+import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
 import LineItem from './LineItem'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import WebCheckout from './WebCheckout'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 class Cart extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
-        this.openCheckout = this.openCheckout.bind(this);
+        this.openCheckout = this.openCheckout.bind(this)
     }
 
     openCheckout() {
-        window.open(this.props.checkout.webUrl);
+        this.props.handleCartClose
+        console.log(this.props.checkout.webUrl)
+        this.props.navigation.navigate('WebCheckoutScreen', {
+            webUrl: this.props.checkout.webUrl,
+          });('WebCheckoutScreen')
     }
 
     render() {
         let line_items = this.props.checkout.lineItems.map((line_item) => {
-            console.log(line_item)
             return (
                 <LineItem
                     updateQuantityInCart={this.props.updateQuantityInCart}
@@ -28,7 +32,7 @@ class Cart extends Component {
         });
 
         return (
-            <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20, flex: 1 }}>
+            <View style={{ paddingTop: 10, paddingLeft: 0, paddingRight: 0, flex: 1 }}>
                 <View style={{ height: 30 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
                         <Text></Text>
@@ -36,7 +40,7 @@ class Cart extends Component {
                         <TouchableOpacity><Text></Text></TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ height: 600 }}>
+                <View style={{ height: 500 }}>
                     <ScrollView style={{ flex: 1, flexDirection: 'column', paddingTop: 30 }}>
                         {line_items}
                     </ScrollView>
@@ -72,8 +76,8 @@ class Cart extends Component {
                     </View>
                 </View>
                 <TouchableOpacity style={{
-                    paddingLeft: 20,
-                    paddingRight: 20,
+                    marginLeft: 20,
+                    marginRight: 20,
                     alignItems: 'center',
                     height: 50,
                     padding: 10,
@@ -81,7 +85,7 @@ class Cart extends Component {
                     backgroundColor: '#000',
                 }}
                     onPress={() => {
-                        { this.openCheckout };
+                        { this.openCheckout() };
                     }}>
                     <Text style={{ color: '#fff' }}>Checkout</Text>
                 </TouchableOpacity>

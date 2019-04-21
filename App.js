@@ -10,12 +10,14 @@ import InfluencerProfile from './InfluencerProfile.js';
 import Main from './Main.js';
 import Cart from './Cart.js';
 import SignUp from './SignUp.js';
+import WebCheckout from './WebCheckout'
 
 
 const FeedStack = createStackNavigator({
     FeedScreen: Feed,
     InfluencerProfileScreen: InfluencerProfile,
     SinglePostScreen: SinglePost,
+    WebCheckoutScreen: WebCheckout,
 });
 
 const DiscoverStack = createStackNavigator({
@@ -23,7 +25,6 @@ const DiscoverStack = createStackNavigator({
   SinglePostScreen: SinglePost,
   InfluencerProfileScreen: InfluencerProfile,
 })
-
 
 const TabNavigator = createBottomTabNavigator({
   FeedScreen: FeedStack,

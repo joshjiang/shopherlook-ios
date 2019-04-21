@@ -4,6 +4,7 @@ import Cart from './Cart';
 import LineItem from './LineItem';
 import Client from 'shopify-buy';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from '../../node_modules/react-native-vector-icons/MaterialIcons';
 import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
@@ -13,7 +14,18 @@ const client = Client.buildClient({
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
 
-const ViewHeader = ({ title, cartModal }) =>
+let sampleProduct = {
+  photo: require('./assets/450x200.png'),
+  seller: {
+    profilePhoto: require('./assets/50x50.png'),
+    name: "Lorem Ipsum",
+    handle: "@loremipsum"
+  },
+  price: 15,
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+};
+
+const ViewHeader = ({ title, children }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
       <Text></Text>
@@ -22,7 +34,7 @@ const ViewHeader = ({ title, cartModal }) =>
       <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
     </View>
     <View style={{ width: 50 }}>
-      {cartModal}
+      {children}
     </View>
   </View>
 
@@ -43,7 +55,7 @@ function LookFeed(props, passed) {
   );
 }
 
-const Look = ({ product, addVariantToCart, navigation, passed}) =>
+const Look = ({ product, addVariantToCart, navigation, passed }) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
       <InfluencerInfo product={product} passed={passed} navigation={navigation} />
@@ -70,7 +82,7 @@ const LookDescription = ({ description, title, navigation }) =>
     <Text style={styles.lookDescription}>{description.split('Product Description ')[1]}</Text>
   </View>
 
-const CartAddButton = ({ price, product, addVariantToCart}) =>
+const CartAddButton = ({ price, product, addVariantToCart }) =>
   <TouchableOpacity style={{
     marginRight: 15,
     borderRadius: 4,
@@ -116,9 +128,15 @@ class CartModal extends Component {
                 style={{ zIndex: 100 }}
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
+                  console.log(this.props.isCartOpen);
                 }}>
                 <Text style={{ fontSize: 30, color: '#00000088', fontWeight: 'bold', textAlign: 'right', paddingRight: 30, top: 45 }}>x</Text></TouchableOpacity>
-              {this.props.cart}
+              <Cart
+                navigation={this.props.navigation}
+                checkout={this.props.checkout}
+                isCartOpen={this.props.isCartOpen}
+                handleCartClose={this.props.handleCartClose}
+                removeLineItemInCart={this.props.removeLineItemInCart} />
             </View>
           </View>
         </Modal>
@@ -126,6 +144,8 @@ class CartModal extends Component {
         <TouchableOpacity
           onPress={() => {
             this.setModalVisible(true);
+            this.props.handleCartClose;
+            console.log(this.props.isCartOpen);
           }}>
           <Icon name="shopping-cart" size={30} />
         </TouchableOpacity>
@@ -151,7 +171,6 @@ class InfluencerInfo extends React.Component {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
@@ -173,7 +192,8 @@ class InfluencerInfo extends React.Component {
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
               id: this.state.id,
-              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
+            })}>
               <Text>{this.state.name}</Text>
             </TouchableOpacity>
             <Text>
@@ -198,6 +218,7 @@ export default class Feed extends React.Component {
       shop: {}
     };
     this.handleCartClose = this.handleCartClose.bind(this);
+    this.handleCartOpen = this.handleCartOpen.bind(this);
     this.addVariantToCart = this.addVariantToCart.bind(this);
     this.updateQuantityInCart = this.updateQuantityInCart.bind(this);
     this.removeLineItemInCart = this.removeLineItemInCart.bind(this);
@@ -218,7 +239,6 @@ export default class Feed extends React.Component {
       this.setState({
         checkout: res,
       });
-      console.log(this.state.checkout.id);
     }).catch(function (error) {
       console.log('There has been a problem with your fetch operation: ' + error.message);
       // ADD THIS THROW error
@@ -260,7 +280,6 @@ export default class Feed extends React.Component {
   }
 
   removeLineItemInCart(lineItemId) {
-    console.log('removed')
     const checkoutId = this.state.checkout.id
     return client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
       this.setState({
@@ -270,8 +289,15 @@ export default class Feed extends React.Component {
   }
 
   handleCartClose() {
+    console.log('function successful')
     this.setState({
       isCartOpen: false,
+    });
+  }
+
+  handleCartOpen() {
+    this.setState({
+      isCartOpen: true,
     });
   }
 
@@ -280,15 +306,17 @@ export default class Feed extends React.Component {
 
     return (
       <View style={styles.container} >
-        <ViewHeader title="FEED"
-          cartModal={<CartModal cart={
-            <Cart
-              checkout={this.state.checkout}
-              isCartOpen={this.state.isCartOpen}
-              handleCartClose={this.handleCartClose}
-              updateQuantityInCart={this.updateQuantityInCart}
-              removeLineItemInCart={this.removeLineItemInCart} />} />} />
-        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation = {this.props.navigation} />
+        <ViewHeader title="FEED">
+          <CartModal
+            navigation={this.props.navigation}
+            checkout={this.state.checkout}
+            isCartOpen={this.state.isCartOpen}
+            handleCartClose={this.handleCartClose}
+            handleCartOpen={this.handlCartOpen}
+            updateQuantityInCart={this.updateQuantityInCart}
+            removeLineItemInCart={this.removeLineItemInCart} />
+        </ViewHeader>
+        <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation={this.props.navigation} />
       </View>
     );
   }
