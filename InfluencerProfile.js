@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList} from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList, Linking} from 'react-native';
 import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
@@ -17,6 +17,9 @@ class InfluencerProfile extends Component {
           products: [],
         };
     }
+    static navigationOptions = {
+        title: 'Profile',
+    };
 
     componentDidMount() {
 
@@ -81,21 +84,21 @@ class ProfileContainer extends Component {
       render() {
         return (
             <View>
-                <ViewHeader />
+                {/* <ViewHeader /> */}
                 <InfluencerContainer pictures={this.state.pictures} handle = {this.props.handle} navigation = {this.props.navigation} person = {this.props.person}/>    
             </View>
         )
       }
 }
 
-const ViewHeader = ({ }) => //the header 
-    //<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-    // 
-    <View style={styles.welcomeContainer}>
-        <MaterialCommunityIcons name="square" size={32} color='white' />
-        <Text style={styles.blue}>PROFILE</Text>
-        <Ionicons name="md-lock" size={18} style={styles.blue} />
-    </View>
+// const ViewHeader = ({ }) => //the header 
+//     //<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+//     // 
+//     <View style={styles.welcomeContainer}>
+//         <MaterialCommunityIcons name="square" size={32} color='white' />
+//         <Text style={styles.blue}>PROFILE</Text>
+//         <Ionicons name="md-lock" size={18} style={styles.blue} />
+//     </View>
 
 //bio container: info about influencer; lookphotofeed: pics of all the objects
 const InfluencerContainer = ({ pictures, handle, navigation, person }) =>
@@ -150,15 +153,36 @@ class InfluencerInfo extends Component {
       }
 
       render() {
+
+        const str = this.state.handle;
+        // str = str.slice(1);
+        let url = '';
+        if (str.charAt(0) == '@') {
+             url = "https://www.instagram.com/" + str.slice(1);
+        } 
+        else {
+             url = "https://www.instagram.com/" + str;
+        }
+
         return (
+
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
                 <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
 
                 <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
+                    {/* EDIT */}
+                    
+                    <Text style={styles.leftAl}
+                        onPress={() => Linking.openURL(url)}>
+                        {this.state.name}
+                    </Text>
 
-                    <Text style={styles.leftAl} > {this.state.name} </Text>
-                    <Text style={styles.leftAl} > {this.state.handle} </Text>
+                    {/* <Text style={styles.leftAl} > {this.state.name} </Text> */}
+                    <Text style={styles.leftAl} 
+                        onPress={() => Linking.openURL(url)}>
+                    {this.state.handle} 
+                    </Text>
 
                 </View>
             </View>
@@ -218,23 +242,15 @@ function LookFeed(props) {
     const listProducts = pictures.map((picture) =>
       <LookPicture picture={picture} key={picture.date} navigation={navigation}/> )
 
-      console.log(pictures);
-
     renderItem = ({item, index}) => {
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
 
         return (
-        // <View>
-        //     <View style={{ padding: 10, zIndex: 10, position: 'absolute', bottom: 0, right: 0, left: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        //         <CartAddButton pictures={pictures} addVariantToCart={addVariantToCart} price={product.variants[0].price} />
-        //     </View>
-
             <View style={styles.item}> 
             {item} 
             </View>
-        // </View>
         
         )
     }
