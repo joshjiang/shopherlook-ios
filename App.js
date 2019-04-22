@@ -31,25 +31,22 @@ const DiscoverStack = createStackNavigator({
   DiscoverScreen: Main,
   SinglePostScreen: SinglePost,
   InfluencerProfileScreen: InfluencerProfile,
-})
+}
+
+// , {
+//   navigationOptions: () => ({
+//     headerTintColor: "gray"
+//   }
+  
+//   )
+// }
+
+)
 
 const TabNavigator = createBottomTabNavigator({
-  // Feed: {
-  //   screen: FeedStack,
-  //   headerTitle: `Feed`
-  //   // navigationOptions: ({ navigation }) => ({
-  //   //   header: `Feed`,
-  //   // })
-  // },
+
   Feed: FeedStack,
-  // FeedScreen: Feed,
   Discover: DiscoverStack,
-  // Discover: {
-  //   screen: DiscoverStack,
-  //   navigationOptions: ({ navigation }) => ({
-  //     title: `Discover`,
-  //   }),
-  // },
   Settings: Settings,
 
 },
