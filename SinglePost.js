@@ -172,21 +172,36 @@ class DetailsClass extends Component {
     let products = this.state.influencerSpecificProducts;
     console.log(" THE PRO ID : " + this.props.proID);
 
-    console.log(products);
+    
 
     products = products.filter(
       (product) => {
-        console.log("API PRODUCT ID: " + product.ID);
+        console.log("API PRODUCT ID: " + product.store_id);
         console.log("PROPS ID: " + this.props.proID);
+        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
 
-        return product.ID.equals(this.props.proID);
+        return product.store_id.toString() === this.props.proID.toString();
       }
     )
-    console.log("Hi:" + products);
+
+    const sizeProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Size: {product.size}</Text>
+    )
+
+    const brandProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Brand: {product.brand}</Text>
+    )
+    
+    const conditionProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Condition: {product.condition}</Text>
+    )
 
       return (
         <View> 
-          <Text style={{ marginHorizontal: 30 }}>Size: {products.size}</Text>
+          <Text style={{ fontSize: 30, marginBottom: 5, marginLeft: 5}}>Details</Text>
+          {sizeProducts}
+          {brandProducts}
+          {conditionProducts}
         </View>
       )
   }

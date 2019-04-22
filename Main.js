@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList , TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList, TouchableOpacity } from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
@@ -70,7 +70,7 @@ class Main extends Component {
       //might need to pass the search into the discovercontainer
       // <DiscoverContainer />
       <View style={styles.container}>
-        <DiscoverContainer products={this.state.products} navigation = {this.props.navigation} />
+        <DiscoverContainer products={this.state.products} navigation={this.props.navigation} />
       </View>
     )
   }
@@ -92,7 +92,7 @@ const DiscoverContainer = ({ products, navigation }) =>
     {/* <SearchDiscover search={search} /> */}
     {/* <Filters /> */}
 
-    <Disc products={products} larry={"asfasdf"} navigation = {navigation} />
+    <Disc products={products} larry={"asfasdf"} navigation={navigation} />
     {/* <BottomHeader /> */}
   </View>
 
@@ -262,12 +262,12 @@ class Disc extends Component {
 
     products = products.filter(
       (product) => {
-          return product.title.includes(search) || product.title.toLowerCase().includes(search);
+        return product.title.includes(search) || product.title.toLowerCase().includes(search);
       }
-)
+    )
 
-    const listProducts = products.map((product) => 
-      <Look product={product} key={product.title} navigation = {this.props.navigation}></Look>
+    const listProducts = products.map((product) =>
+      <Look product={product} key={product.title} navigation={this.props.navigation}></Look>
     )
 
 
@@ -343,12 +343,12 @@ class Disc extends Component {
 //   );
 
 
-const Look = ({ product , navigation}) =>
+const Look = ({ product, navigation }) =>
 
-     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-        {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
-        <LookPicture photo={product.images[0].src} />
-    </TouchableOpacity>
+  <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+    {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
+    <LookPicture photo={product.images[0].src} />
+  </TouchableOpacity>
 
 // photo
 

@@ -163,25 +163,18 @@ class InfluencerInfo extends Component {
         }
 
         return (
-
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-
                 <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
 
                 <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
-                    {/* EDIT */}
-
                     <Text style={styles.leftAl}
                         onPress={() => Linking.openURL(url)}>
                         {this.state.name}
                     </Text>
-
-                    {/* <Text style={styles.leftAl} > {this.state.name} </Text> */}
                     <Text style={styles.leftAl}
                         onPress={() => Linking.openURL(url)}>
                         {this.state.handle}
                     </Text>
-
                 </View>
             </View>
         )
@@ -196,10 +189,6 @@ const FuncIcons = ({person }) =>
 
         <Add />
     </View>
-
-//INSTA TODO: link 
-const InstagramLink = ({ }) =>
-    <AntDesign name="instagram" size={18} style={styles.space} />
 
 class InstagramLinkClass extends Component { //pass props
     constructor() {
@@ -230,10 +219,9 @@ class InstagramLinkClass extends Component { //pass props
     }
 
     render() {
-
         const str = this.state.handle;
-        // str = str.slice(1);
         let url = '';
+
         if (str.charAt(0) == '@') {
             url = "https://www.instagram.com/" + str.slice(1);
         }
@@ -315,7 +303,6 @@ function LookFeed(props) {
 
 const LookPicture = ({ picture, navigation }) =>
     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-        {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
         <LookPhoto photo={picture.img_urls[0]} />
     </TouchableOpacity>
 
@@ -572,3 +559,7 @@ export default InfluencerProfile;
 
 //         </View>
 //     </View>
+
+//INSTA TODO: link 
+// const InstagramLink = ({ }) =>
+//     <AntDesign name="instagram" size={18} style={styles.space} />
