@@ -345,19 +345,12 @@ class Disc extends Component {
 
 const Look = ({ product, navigation }) =>
 
-<<<<<<< HEAD
-  <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-    {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
-    <LookPicture photo={product.images[0].src} />
-  </TouchableOpacity>
-=======
      <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
       productId: product.id,
     })}>
         
         <LookPicture photo={product.images[0].src} />
     </TouchableOpacity>
->>>>>>> e3c55f06dbf4eae9a5c8e953eb1f41303f083104
 
 // photo
 

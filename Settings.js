@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
         //marginTop: 70,
         color: "black",
         //'#4B9CD3',
-        paddingLeft: 150,
+        paddingLeft: 180,
         paddingTop: 40
         //'#42bcf4',
 
