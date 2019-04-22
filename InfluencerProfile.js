@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button , FlatList, Linking} from 'react-native';
-import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons} from '@expo/vector-icons';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button, FlatList, Linking } from 'react-native';
+import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
 
@@ -12,9 +12,9 @@ const client = Client.buildClient({
 class InfluencerProfile extends Component {
     constructor() {
         super();
-    
+
         this.state = {
-          products: [],
+            products: [],
         };
     }
     static navigationOptions = {
@@ -24,22 +24,22 @@ class InfluencerProfile extends Component {
     componentDidMount() {
 
         return client.product.fetchAll().then((res) => {
-          this.setState({
-            products: res,
-          });
+            this.setState({
+                products: res,
+            });
         }).catch(function (error) {
-          console.log('There has been a problem with your fetch operation: ' + error.message);
-          throw error;
+            console.log('There has been a problem with your fetch operation: ' + error.message);
+            throw error;
         });;
     }
-    
+
     render() {
         const { navigation } = this.props;
         const handle = navigation.getParam('id', 'noid');
         const person = navigation.getParam('person', 'noperson');
         return (
             <View style={styles.container}>
-                <ProfileContainer products={this.state.products} handle = {handle} navigation = {this.props.navigation} person = {person}/>
+                <ProfileContainer products={this.state.products} handle={handle} navigation={this.props.navigation} person={person} />
             </View>
         )
     }
@@ -55,40 +55,40 @@ class InfluencerProfile extends Component {
 class ProfileContainer extends Component {
     constructor() {
         super();
-    
+
         this.state = {
-          pictures: []
+            pictures: []
         };
     }
 
-      componentDidMount() {
+    componentDidMount() {
         console.log(this.props.handle);
 
         return fetch('https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.handle)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson);
-            console.log(this.props.handle);
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson);
+                console.log(this.props.handle);
 
-            this.setState({
-                pictures: responseJson
+                this.setState({
+                    pictures: responseJson
+                });
+            })
+            .catch((error) => {
+                console.log("ERROR");
+                console.log(this.props.handle);
+                console.error(error);
             });
-          })
-          .catch((error) => {
-            console.log("ERROR");
-            console.log(this.props.handle);
-            console.error(error);
-          });
-      }
+    }
 
-      render() {
+    render() {
         return (
             <View>
                 {/* <ViewHeader /> */}
-                <InfluencerContainer pictures={this.state.pictures} handle = {this.props.handle} navigation = {this.props.navigation} person = {this.props.person}/>    
+                <InfluencerContainer pictures={this.state.pictures} handle={this.props.handle} navigation={this.props.navigation} person={this.props.person} />
             </View>
         )
-      }
+    }
 }
 
 // const ViewHeader = ({ }) => //the header 
@@ -103,65 +103,63 @@ class ProfileContainer extends Component {
 //bio container: info about influencer; lookphotofeed: pics of all the objects
 const InfluencerContainer = ({ pictures, handle, navigation, person }) =>
     <View>
-        <BioContainer pictures={pictures} handle = {handle} person = {person}/>
-        <LookFeed pictures={pictures} handle = {handle} navigation = {navigation}/>         
+        <BioContainer pictures={pictures} handle={handle} person={person} />
+        <LookFeed pictures={pictures} handle={handle} navigation={navigation} />
     </View>
 
 // ProfileIcons: that light blue bar with influencer info 
 // InfluencerBio: text info
-const BioContainer = ({pictures, handle , person}) =>
+const BioContainer = ({ pictures, handle, person }) =>
     <View>
-        <ProfileIcons pictures={pictures} handle = {handle} person ={person} />
-        <InfluencerBio  />
+        <ProfileIcons pictures={pictures} handle={handle} person={person} />
+        <InfluencerBio />
     </View>
 
 
-const ProfileIcons = ({pictures, handle, person}) =>
+const ProfileIcons = ({ pictures, handle, person }) =>
     <View style={styles.modContainer}>
-        <InfluencerInfo pictures={pictures} handle = {handle} person = {person}/>
-        <FuncIcons />
+        <InfluencerInfo pictures={pictures} handle={handle} person={person} />
+        <FuncIcons person={person} />
     </View>
 
 class InfluencerInfo extends Component {
     constructor() {
         super();
-    
+
         this.state = {
-          name: "",
-          handle: "",
+            name: "",
+            handle: "",
         };
     }
 
-      componentDidMount() {
-        // console.log("the id: " + this.props.person);
-
+    componentDidMount() {
         return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + this.props.person)
-          .then((response) => response.json())
-          .then((responseJson) => {
+            .then((response) => response.json())
+            .then((responseJson) => {
 
-            this.setState({
-                name: responseJson.first_name + ' ' + responseJson.last_name,
-                handle: responseJson.instagram_handle
+                this.setState({
+                    name: responseJson.first_name + ' ' + responseJson.last_name,
+                    handle: responseJson.instagram_handle
+                });
+            })
+
+            .catch((error) => {
+                console.log("ERROR hereee");
+                console.log(this.props.handle);
+                console.error(error);
             });
-          })
+    }
 
-          .catch((error) => {
-            console.log("ERROR hereee");
-            console.log(this.props.handle);
-            console.error(error);
-          });
-      }
-
-      render() {
+    render() {
 
         const str = this.state.handle;
         // str = str.slice(1);
         let url = '';
         if (str.charAt(0) == '@') {
-             url = "https://www.instagram.com/" + str.slice(1);
-        } 
+            url = "https://www.instagram.com/" + str.slice(1);
+        }
         else {
-             url = "https://www.instagram.com/" + str;
+            url = "https://www.instagram.com/" + str;
         }
 
         return (
@@ -172,33 +170,82 @@ class InfluencerInfo extends Component {
 
                 <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
                     {/* EDIT */}
-                    
+
                     <Text style={styles.leftAl}
                         onPress={() => Linking.openURL(url)}>
                         {this.state.name}
                     </Text>
 
                     {/* <Text style={styles.leftAl} > {this.state.name} </Text> */}
-                    <Text style={styles.leftAl} 
+                    <Text style={styles.leftAl}
                         onPress={() => Linking.openURL(url)}>
-                    {this.state.handle} 
+                        {this.state.handle}
                     </Text>
 
                 </View>
             </View>
-        ) }
+        )
+    }
 }
 
 //INSTA TODO: link to insta page (maybe need insta API)
-const FuncIcons = ({ }) =>
+const FuncIcons = ({person }) =>
     <View style={{ flexDirection: 'row', alignItems: 'right', justifyContent: 'space-between' }}>
-        <InstagramLink />
+        {/* <InstagramLink person={person}  /> */}
+        <InstagramLinkClass person={person}  />
+
         <Add />
     </View>
 
 //INSTA TODO: link 
 const InstagramLink = ({ }) =>
     <AntDesign name="instagram" size={18} style={styles.space} />
+
+class InstagramLinkClass extends Component { //pass props
+    constructor() {
+        super();
+
+        this.state = {
+            name: "",
+            handle: "",
+        };
+    }
+
+    componentDidMount() {
+        return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + this.props.person)
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                this.setState({
+                    name: responseJson.first_name + ' ' + responseJson.last_name,
+                    handle: responseJson.instagram_handle
+                });
+            })
+
+            .catch((error) => {
+                console.log("ERROR hereee");
+                console.log(this.props.handle);
+                console.error(error);
+            });
+    }
+
+    render() {
+
+        const str = this.state.handle;
+        // str = str.slice(1);
+        let url = '';
+        if (str.charAt(0) == '@') {
+            url = "https://www.instagram.com/" + str.slice(1);
+        }
+        else {
+            url = "https://www.instagram.com/" + str;
+        }
+
+        return (
+            <AntDesign name="instagram" size={18} style={styles.space} onPress={() => Linking.openURL(url)} />
+        )
+    }
+}
 
 const Add = ({ }) =>
     <AntDesign name="plus" size={18} style={styles.space2} />
@@ -214,7 +261,7 @@ const InfluencerBio = ({ }) =>
         <AntDesign name="info" size={30} style={styles.blue} />
 
         <View style={{ marginLeft: 10, marginTop: 40, marginRight: 80, marginBottom: 20 }}>
-            <Text style={styles.blue}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            <Text style={styles.blue}>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </Text>
         </View>
 
@@ -223,13 +270,13 @@ const InfluencerBio = ({ }) =>
 //<Ionicons name="md-lock" size={40}/>   
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
-  
+
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
     while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-      data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-      numberOfElementsLastRow++;
+        data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+        numberOfElementsLastRow++;
     }
-  
+
     return data;
 };
 
@@ -238,24 +285,24 @@ const numColumns = 3;
 function LookFeed(props) {
     const pictures = props.pictures;
     const navigation = props.navigation;
-  
-    const listProducts = pictures.map((picture) =>
-      <LookPicture picture={picture} key={picture.date} navigation={navigation}/> )
 
-    renderItem = ({item, index}) => {
+    const listProducts = pictures.map((picture) =>
+        <LookPicture picture={picture} key={picture.date} navigation={navigation} />)
+
+    renderItem = ({ item, index }) => {
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
 
         return (
-            <View style={styles.item}> 
-            {item} 
+            <View style={styles.item}>
+                {item}
             </View>
-        
+
         )
     }
-    return ( 
-        <ScrollView > 
+    return (
+        <ScrollView >
             <FlatList
                 data={formatData(listProducts, numColumns)}
                 style={styles.container}
@@ -264,18 +311,18 @@ function LookFeed(props) {
             />
         </ScrollView>
     );
-  }
+}
 
-const LookPicture = ({picture, navigation}) =>
+const LookPicture = ({ picture, navigation }) =>
     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
         {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
         <LookPhoto photo={picture.img_urls[0]} />
     </TouchableOpacity>
-      
-const LookPhoto = ({photo}) => //resizeMode="cover"  
+
+const LookPhoto = ({ photo }) => //resizeMode="cover"  
     <Image
-    source={{ uri: photo}}
-    style={styles.lookphoto}
+        source={{ uri: photo }}
+        style={styles.lookphoto}
     />
 
 const CartAddButton = ({ }) =>
@@ -302,7 +349,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         paddingTop: 10,
-        
+
     },
     backColor: {
         backgroundColor: '#d4eaf7'
@@ -420,7 +467,7 @@ const styles = StyleSheet.create({
         margin: 1,
         height: Dimensions.get('window').width / numColumns, // approximate a square
     },
-      itemInvisible: {
+    itemInvisible: {
         backgroundColor: 'transparent',
     },
     itemText: {
@@ -441,7 +488,7 @@ export default InfluencerProfile;
 //     const products = props.products;
 //     const handle = props.handle;
 //     const navigation = props.navigation;
-    
+
 
 //     const filteredProducts = products.filter((product) => {
 //         return product.name === handle; //*** want to filter based on the user somehow 
@@ -506,13 +553,13 @@ export default InfluencerProfile;
 
 //TODO: 
 // const InfluencerInfo = ({ pictures , handle }) =>
-    
+
 //     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
 //         <FontAwesome name="user-circle-o" size={30} style={styles.blue} />
 
 //         <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
-            
+
 //             {/* TODO: Pull Influencer Name */}
 //             <Text style={styles.leftAl} >
 //                 Lawrence Zhang
