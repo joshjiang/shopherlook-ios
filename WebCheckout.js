@@ -8,6 +8,7 @@ class WebCheckout extends Component {
         source={{uri: this.props.navigation.getParam('webUrl', '')}}
         style={{flex:1}}
         onError={console.log('webview load error')}
+        originWhitelist={['*']}
       />
     );
   }
