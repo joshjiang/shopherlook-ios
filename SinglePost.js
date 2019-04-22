@@ -58,54 +58,54 @@ class Look extends React.Component {
   }
 }
 
-class NameBar extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      handle: '',
-      id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-    };
-  }
+// class NameBar extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       name: '',
+//       handle: '',
+//       id: '',
+    
+//     };
+//   }
 
 
-  componentDidMount() {
-    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
-      .then((response) => response.json())
-      .then((responseJson) => {
+//   componentDidMount() {
 
-        this.setState({
-          name: responseJson.first_name + ' ' + responseJson.last_name,
-          handle: responseJson.instagram_handle,
-          id: responseJson.ID,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+//     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+//       .then((response) => response.json())
+//       .then((responseJson) => {
 
-  render() {
-    return (
-      <View style={styles.nameBar}>
-        <Image
-          style={{ width: 40, height: 40, borderRadius: 20 }}
-          source={{ uri: this.props.user.photo }}
-        />
+//         this.setState({
+//           name: responseJson.first_name + ' ' + responseJson.last_name,
+//           handle: responseJson.instagram_handle,
+//           id: responseJson.ID,
+//         });
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//       });
+//   }
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-          id: this.state.id,
-          person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-        })}>
-          <Text>{this.state.name}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+//   render() {
 
+//     return (
+//       <View style={styles.nameBar}>
+//         <Image
+//           style={{ width: 40, height: 40, borderRadius: 20 }}
+//           source={{ uri: this.props.user.photo }}
+//         />
 
-}
+//         <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+//           id: this.state.id,
+//           person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
+//         })}>
+//           <Text>{this.state.name}</Text>
+//         </TouchableOpacity>
+//       </View>
+//     )
+//   }
+// }
 
 
 function ImageClothes({ photo }) {
@@ -172,21 +172,36 @@ class DetailsClass extends Component {
     let products = this.state.influencerSpecificProducts;
     console.log(" THE PRO ID : " + this.props.proID);
 
-    console.log(products);
+    
 
     products = products.filter(
       (product) => {
-        console.log("API PRODUCT ID: " + product.ID);
+        console.log("API PRODUCT ID: " + product.store_id);
         console.log("PROPS ID: " + this.props.proID);
+        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
 
-        return product.ID.equals(this.props.proID);
+        return product.store_id.toString() === this.props.proID.toString();
       }
     )
-    console.log("Hi:" + products);
+
+    const sizeProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Size: {product.size}</Text>
+    )
+
+    const brandProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Brand: {product.brand}</Text>
+    )
+    
+    const conditionProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Condition: {product.condition}</Text>
+    )
 
       return (
         <View> 
-          <Text style={{ marginHorizontal: 30 }}>Size: {products.size}</Text>
+          <Text style={{ fontSize: 30, marginBottom: 5, marginLeft: 5}}>Details</Text>
+          {sizeProducts}
+          {brandProducts}
+          {conditionProducts}
         </View>
       )
   }
@@ -204,8 +219,13 @@ function Title({ product }) {
 }
 
 function Description({ item }) {
+  descriptionSplit = {item}.description
+  if (item.description != undefined) {
+    descriptionSplit = item.description.split('Product Description ')[1];
+  }
+  
 
-  return (<Text style={styles.description}>{item.description}</Text>)
+  return (<Text style={styles.description}>{descriptionSplit}</Text>)
 }
 
 
@@ -223,7 +243,7 @@ class SinglePost extends Component {
   };
 
   componentDidMount() {
-    const productId = this.props.navigation.getParam('productId', 'noproduct');
+    const productId = this.props.navigation.getParam('productId','"noproduct"');
 
 
     client.product.fetch(productId).then((res) => {
