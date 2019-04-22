@@ -352,7 +352,8 @@ const styles = StyleSheet.create({
 
     },
     backColor: {
-        backgroundColor: '#d4eaf7'
+        backgroundColor: "grey",
+        //'#d4eaf7'
     },
     welcomeContainer: {
         justifyContent: 'space-between',
@@ -371,7 +372,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 0,
         marginRight: 0,
-        backgroundColor: '#f4fbff',
+        backgroundColor: "#f4f2f2",
+        //'#f4fbff',
         //backgroundColor: '#f9fdff',
         //backgroundColor: '#f9fcff',
         paddingTop: 30,
@@ -381,11 +383,13 @@ const styles = StyleSheet.create({
     },
     space: {
         paddingRight: 25,
-        color: '#4B9CD3'
+        color: "black",
+         //'#4B9CD3'
     },
     space2: {
         paddingRight: 10,
-        color: '#4B9CD3'
+        color: "black",
+        //'#4B9CD3'
     },
     viewheader: {
         //flex: 1,
@@ -401,7 +405,8 @@ const styles = StyleSheet.create({
     },
     blue: {
         //marginTop: 70,
-        color: '#4B9CD3'
+        color: "black",
+        //'#4B9CD3'
         //'#42bcf4',
     },
     font: {
@@ -414,11 +419,13 @@ const styles = StyleSheet.create({
     rem: {
         paddingTop: 20,
         paddingLeft: 55,
-        color: '#4B9CD3',
+        color: "black",
+         //'#4B9CD3',
         paddingBottom: 10
     },
     leftAl: {
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
         marginLeft: 10
     },
     rotate: {
