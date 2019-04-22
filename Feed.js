@@ -32,7 +32,7 @@ const ViewHeader = ({ title, children }) =>
 function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
-
+  
 
   const listProducts = products.map((product) =>
     <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
@@ -59,19 +59,139 @@ const Look = ({ product, addVariantToCart, navigation, passed }) =>
       </View>
       <LookPhoto photo={product.images[0].src} />
     </View>
-    <LookDescription title={product.title} description={product.description} navigation={navigation} />
+    <LookDescription product = {product} navigation={navigation}/>
   </View>
 
 const LookPhoto = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-const LookDescription = ({ description, title, navigation }) =>
-  <View>
-    <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-      <Text style={styles.lookTitle}> {title} </Text>
+class InfluencerInfo extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      name: '',
+      handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+    };
+  }
+
+
+  componentDidMount() {
+    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        this.setState({
+          name: responseJson.first_name + ' ' + responseJson.last_name,
+          handle: responseJson.instagram_handle,
+          id: responseJson.ID,
+          
+        });
+       
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+  render() {
+    
+    return (
+      <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
+        {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+              id: this.state.id,
+              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4] })}>
+              <Text>{this.state.name}</Text>
+            </TouchableOpacity>
+            <Text>
+              {this.state.handle}
+            </Text>
+          </View>
+        </View >
+      </View >
+    )
+  }
+}
+
+
+class LookDescription extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      name: '',
+      handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+    };
+  }
+
+
+  componentDidMount() {
+    
+    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        this.setState({
+          name: responseJson.first_name + ' ' + responseJson.last_name,
+          handle: responseJson.instagram_handle,
+          id: responseJson.ID,
+          
+        });
+       
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+  render() {
+
+    return (
+ <View>
+    
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen',{
+      productId: this.props.product.id,
+    })} >
+
+      <Text style={styles.lookTitle}> {this.props.product.title} </Text>
     </TouchableOpacity>
-    <Text style={styles.lookDescription}>{description.split('Product Description ')[1]}</Text>
+    
+    <Text style={styles.lookDescription}>{this.props.product.description.split('Product Description ')[1]}</Text>
   </View>
+    )
+  }
+}
+
+
+
+
+
+
+
+
+  // const LookDescription = ({navigation, product}) =>
+  // <View>
+    
+  //   <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
+  //     productId: product.id,
+  //   })} >
+
+  //     <Text style={styles.lookTitle}> {product.title} </Text>
+  //   </TouchableOpacity>
+    
+  //   <Text style={styles.lookDescription}>{product.description.split('Product Description ')[1]}</Text>
+  // </View>
 
 const CartAddButton = ({ price, product, addVariantToCart }) =>
   <TouchableOpacity style={{
@@ -159,58 +279,6 @@ class CartModal extends Component {
     );
   }
 }
-class InfluencerInfo extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      name: '',
-      handle: '',
-      id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-    };
-  }
-
-
-  componentDidMount() {
-    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          name: responseJson.first_name + ' ' + responseJson.last_name,
-          handle: responseJson.instagram_handle,
-          id: responseJson.ID,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-
-
-  render() {
-    return (
-      <View style={{ marginTop: 10, marginLeft: 15, marginBottom: 10, flexDirection: 'row' }}>
-        {/* <Image source={influencer.profilePhoto} style={styles.influencerPhoto} /> */}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-              id: this.state.id,
-              person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-            })}>
-              <Text>{this.state.name}</Text>
-            </TouchableOpacity>
-            <Text>
-              {this.state.handle}
-            </Text>
-          </View>
-        </View >
-      </View >
-    )
-  }
-}
-
 
 export default class Feed extends React.Component {
   constructor() {
@@ -312,7 +380,7 @@ export default class Feed extends React.Component {
 
 
   render() {
-
+    
     return (
       <View style={styles.container} >
         <ViewHeader title="FEED">
