@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList , TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, FlatList, TouchableOpacity } from 'react-native'
 // import SearchBar from 'react-native-search-bar'
 import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
@@ -63,14 +63,14 @@ class Main extends Component {
 
   render() {
     console.log(this.state.products);
-
+    
     //const { search } = this.state;
     return (
 
       //might need to pass the search into the discovercontainer
       // <DiscoverContainer />
       <View style={styles.container}>
-        <DiscoverContainer products={this.state.products} navigation = {this.props.navigation} />
+        <DiscoverContainer products={this.state.products} navigation={this.props.navigation} />
       </View>
     )
   }
@@ -92,7 +92,7 @@ const DiscoverContainer = ({ products, navigation }) =>
     {/* <SearchDiscover search={search} /> */}
     {/* <Filters /> */}
 
-    <Disc products={products} larry={"asfasdf"} navigation = {navigation} />
+    <Disc products={products} larry={"asfasdf"} navigation={navigation} />
     {/* <BottomHeader /> */}
   </View>
 
@@ -215,7 +215,7 @@ function DiscoverFeed(props) {
     )
   }
   return (
-    <View style={{ height: 480 }}>
+    <View >
       <ScrollView >
         <FlatList
           data={formatData(listProducts, numColumns)}
@@ -262,12 +262,12 @@ class Disc extends Component {
 
     products = products.filter(
       (product) => {
-          return product.title.includes(search) || product.title.toLowerCase().includes(search);
+        return product.title.includes(search) || product.title.toLowerCase().includes(search);
       }
-)
+    )
 
-    const listProducts = products.map((product) => 
-      <Look product={product} key={product.title} navigation = {this.props.navigation}></Look>
+    const listProducts = products.map((product) =>
+      <Look product={product} key={product.title} navigation={this.props.navigation}></Look>
     )
 
 
@@ -282,7 +282,7 @@ class Disc extends Component {
           value={search}
         />
 
-        <View style={{ height: 480 }}>
+        <View style={{ height: 1100 }}>
           <ScrollView >
             <FlatList
               data={formatData(listProducts, numColumns)}
@@ -343,10 +343,12 @@ class Disc extends Component {
 //   );
 
 
-const Look = ({ product , navigation}) =>
+const Look = ({ product, navigation }) =>
 
-     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-        {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
+     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
+      productId: product.id,
+    })}>
+        
         <LookPicture photo={product.images[0].src} />
     </TouchableOpacity>
 
@@ -361,18 +363,6 @@ const LookPicture = ({ photo }) =>
 
 // <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
 // <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const BottomHeader = ({ }) =>
@@ -447,8 +437,8 @@ const styles = StyleSheet.create({
   },
   lookPhoto: {
     resizeMode: 'stretch',
-    height: 100,
-    width: 100
+    height: 125,
+    width: 125
   },
 
 

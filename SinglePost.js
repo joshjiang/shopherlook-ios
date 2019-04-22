@@ -30,81 +30,82 @@ const sampleItem = {
 class Look extends React.Component {
   constructor() {
     super();
-}
-render() {
-
-  
-   imagesrc = "hi";
-  if(this.props.product.images != undefined)
-  {
-    imagesrc = this.props.product.images[0].src
-
   }
-  console.log(imagesrc)
-
-  return (
-    <View>
-      <ScrollView>
-      {/* <NameBar user={sampleUser} navigation={this.props.navigation} product={this.props.product} /> */}
-      <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
-    <Title product={this.props.product} />
-<Description item={this.props.product} />
- <Details item={sampleItem} />
- </ScrollView>
- </View>
- 
-  )
-}
-}
-
-class NameBar extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      handle: '',
-      id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-    };
-  }
-
-
-  componentDidMount() {
-    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          name: responseJson.first_name + ' ' + responseJson.last_name,
-          handle: responseJson.instagram_handle,
-          id: responseJson.ID,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
   render() {
-    return (
-      <View style={styles.nameBar}>
-        <Image
-          style={{ width: 40, height: 40, borderRadius: 20 }}
-          source={{ uri: this.props.user.photo }}
-        />
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-          id: this.state.id,
-          person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-        })}>
-          <Text>{this.state.name}</Text>
-        </TouchableOpacity>
+
+    imagesrc = "hi";
+    if (this.props.product.images != undefined) {
+      imagesrc = this.props.product.images[0].src
+
+    }
+    console.log(imagesrc);
+
+    return (
+      <View>
+        <ScrollView>
+          {/* <NameBar user={sampleUser} navigation={this.props.navigation} product={this.props.product} /> */}
+          <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
+          <Title product={this.props.product} />
+          <Description item={this.props.product} />
+          {/* <Details product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} /> */}
+          <DetailsClass product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} />
+
+        </ScrollView>
       </View>
+
     )
   }
-
-
 }
+
+// class NameBar extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       name: '',
+//       handle: '',
+//       id: '',
+    
+//     };
+//   }
+
+
+//   componentDidMount() {
+
+//     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+//       .then((response) => response.json())
+//       .then((responseJson) => {
+
+//         this.setState({
+//           name: responseJson.first_name + ' ' + responseJson.last_name,
+//           handle: responseJson.instagram_handle,
+//           id: responseJson.ID,
+//         });
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//       });
+//   }
+
+//   render() {
+
+//     return (
+//       <View style={styles.nameBar}>
+//         <Image
+//           style={{ width: 40, height: 40, borderRadius: 20 }}
+//           source={{ uri: this.props.user.photo }}
+//         />
+
+//         <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
+//           id: this.state.id,
+//           person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
+//         })}>
+//           <Text>{this.state.name}</Text>
+//         </TouchableOpacity>
+//       </View>
+//     )
+//   }
+// }
 
 
 function ImageClothes({ photo }) {
@@ -121,14 +122,95 @@ const LookPhoto = ({ imagesrc }) =>
   <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
 
 
-function Details({ item }) {
-  return (<View style={styles.details}>
-    <Text style={{ fontSize: 30, marginBottom: 5 }}>Details</Text>
+function Details(props) {
+  console.log("THIS IS THE ID: " + props.id);
+  console.log("THIS IS THE PROID: " + props.proID);
+
+
+
+  return (
+    <View style={styles.details}>
+      {/* <Text style={{ fontSize: 30, marginBottom: 5 }}>Details</Text>
     <Text style={{ marginHorizontal: 30 }}>Size: {item.size}</Text>
     <Text style={{ marginHorizontal: 30 }}>Brand: {item.brand}</Text>
-    <Text style={{ marginHorizontal: 30 }}>Condition: {item.condition}</Text>
-  </View>)
+    <Text style={{ marginHorizontal: 30 }}>Condition: {item.condition}</Text> */}
+    </View>
+  )
 }
+
+class DetailsClass extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      influencerSpecificProducts: []
+    };
+
+  }
+
+  componentDidMount() {
+    console.log("INSIDE THE DID MOUNT: " + 'https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.id);
+
+    return fetch('https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.id)
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          influencerSpecificProducts: responseJson
+        });
+
+      }).catch((error) => {
+        console.error(error);
+      });
+
+
+  }
+
+  render() {
+    // console.log("INSIDE THE RENDER: " + this.state.influencerSpecificProducts);
+
+    let products = this.state.influencerSpecificProducts;
+    console.log(" THE PRO ID : " + this.props.proID);
+
+    
+
+    products = products.filter(
+      (product) => {
+        console.log("API PRODUCT ID: " + product.store_id);
+        console.log("PROPS ID: " + this.props.proID);
+        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
+
+        return product.store_id.toString() === this.props.proID.toString();
+      }
+    )
+
+    const sizeProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Size: {product.size}</Text>
+    )
+
+    const brandProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Brand: {product.brand}</Text>
+    )
+    
+    const conditionProducts = products.map((product) =>
+      <Text style={{ marginHorizontal: 30 }} key={product.ID} > Condition: {product.condition}</Text>
+    )
+
+      return (
+        <View> 
+          <Text style={{ fontSize: 30, marginBottom: 5, marginLeft: 5}}>Details</Text>
+          {sizeProducts}
+          {brandProducts}
+          {conditionProducts}
+        </View>
+      )
+  }
+
+}
+
+
+
+
 
 
 
@@ -137,8 +219,13 @@ function Title({ product }) {
 }
 
 function Description({ item }) {
+  descriptionSplit = {item}.description
+  if (item.description != undefined) {
+    descriptionSplit = item.description.split('Product Description ')[1];
+  }
+  
 
-  return (<Text style={styles.description}>{item.description}</Text>)
+  return (<Text style={styles.description}>{descriptionSplit}</Text>)
 }
 
 
@@ -156,29 +243,32 @@ class SinglePost extends Component {
   };
 
   componentDidMount() {
-    const productId = this.props.navigation.getParam('productId', 'noproduct');
+    const productId = this.props.navigation.getParam('productId','"noproduct"');
+
 
     client.product.fetch(productId).then((res) => {
       // Do something with the product
-      
       this.setState({
         product: res,
       });
-     
-     console.log(this.state.product.images[0].src);
-     
-     
-    });
 
+      //  console.log(this.state.product.images[0].src);
+      //  console.log("this is the product id: " + productId);
+      //  console.log("idk man: " + Buffer.from(this.state.product.id, 'base64').toString().split('/')[4]);
+    });
   }
 
   render() {
-    
+    const ID = this.props.navigation.getParam('id', 'noID');
+    const proID = this.props.navigation.getParam('proID', 'noID');
+    console.log("THIS IS THE ID: " + ID);
+    console.log("THIS IS THE PROID: " + proID);
+
+
     return (
-     
       <View style={styles.container}>
-        <Look product ={this.state.product} navigation={this.props.navigation}></Look>
-       </View>
+        <Look product={this.state.product} navigation={this.props.navigation} id={ID} proID={proID} ></Look>
+      </View>
     )
   }
 }
