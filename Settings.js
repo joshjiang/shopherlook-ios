@@ -6,6 +6,11 @@ import { Ionicons, SimpleLineIcons, FontAwesome, Feather, MaterialCommunityIcons
 
 
 class Settings extends Component {
+
+    static navigationOptions = {
+        title: 'Settings',
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -29,7 +34,7 @@ const ViewHeader = ({ }) =>
     <View style={styles.welcomeContainer}>
 
 
-        <Text style={styles.blue}>SETTINGS</Text>
+        <Text style={styles.blue}>Settings</Text>
 
 
 
@@ -241,7 +246,8 @@ const styles = StyleSheet.create({
     
     padText: {
 
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
         paddingTop: 7
         
 
@@ -258,29 +264,34 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginRight: 0,
         paddingBottom: 20,
-        backgroundColor: '#f2f5ff'
+        backgroundColor: "#f4f2f2",
+        //'#f2f5ff'
     },
 
     blue: {
         //marginTop: 70,
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
         paddingLeft: 150,
         paddingTop: 40
         //'#42bcf4',
 
     },
     simpBlue: {
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
     },
 
     padBlue: {
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
         paddingRight: 20,
         paddingLeft: 15
     },
 
     bellBlue: {
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3',
         paddingTop: 0
 
     },
@@ -288,7 +299,8 @@ const styles = StyleSheet.create({
     center: {
         paddingTop: 30,
         paddingLeft: 110,
-        color: '#4B9CD3'
+        color: "black",
+        //'#4B9CD3'
 
     },
 
@@ -301,7 +313,8 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         marginLeft: 0,
         marginRight: 0,
-        backgroundColor: '#d4eaf7',
+        backgroundColor: "white",
+        //'#d4eaf7',
         //backgroundColor: '#f9fdff',
         //backgroundColor: '#f9fcff',
         paddingTop: 20,
@@ -311,12 +324,13 @@ const styles = StyleSheet.create({
     },
 
     leftAl: {
-        color: '#4B9CD3',
+        color: "black",
         marginLeft: 10
     },
 
     leftAll: {
-        color: '#4B9CD3',
+        color: "black",
+        //'#4B9CD3'
         marginLeft: 10
     },
 
@@ -329,7 +343,8 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         marginLeft: 0,
         marginRight: 0,
-        backgroundColor: '#f2f5ff',
+        backgroundColor: "#f4f2f2",
+        //'#f2f5ff',
         //backgroundColor: '#f9fdff',
         //backgroundColor: '#f9fcff',
         paddingTop: 30,
