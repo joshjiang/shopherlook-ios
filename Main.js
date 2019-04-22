@@ -63,7 +63,7 @@ class Main extends Component {
 
   render() {
     console.log(this.state.products);
-
+    
     //const { search } = this.state;
     return (
 
@@ -345,8 +345,10 @@ class Disc extends Component {
 
 const Look = ({ product , navigation}) =>
 
-     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
-        {/* <MaterialCommunityIcons name="square" size={100} color='#d3e9ff' /> */}
+     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
+      productId: product.id,
+    })}>
+        
         <LookPicture photo={product.images[0].src} />
     </TouchableOpacity>
 
