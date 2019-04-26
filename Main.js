@@ -347,6 +347,8 @@ const Look = ({ product, navigation }) =>
 
      <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
       productId: product.id,
+      // proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+
     })}>
         
         <LookPicture photo={product.images[0].src} />
