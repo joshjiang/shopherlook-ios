@@ -34,18 +34,19 @@ class Look extends React.Component {
   render() {
 
 
-    imagesrc = "hi";
+    
     if (this.props.product.images != undefined) {
       imagesrc = this.props.product.images[0].src
 
     }
-    console.log(imagesrc);
+   
 
     return (
       <View>
         <ScrollView>
           {/* <NameBar user={sampleUser} navigation={this.props.navigation} product={this.props.product} /> */}
-          <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
+          {/* <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} /> */}
+          <LookPhoto product = {this.props.product}></LookPhoto>
           <Title product={this.props.product} />
           <Description item={this.props.product} />
           {/* <Details product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} /> */}
@@ -118,8 +119,34 @@ function ImageClothes({ photo }) {
 }
 
 
-const LookPhoto = ({ imagesrc }) =>
-  <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
+// const LookPhoto = ({ imagesrc }) =>
+//   <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
+
+  function LookPhoto ({product}) {
+    const { images } = product;
+  
+    if (images && images.length) {
+      return (
+        <View
+          style={styles.scrollContainer}
+        >
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+          >
+            {images.map(image => (
+              // <Text key = {image.src}>{image.src}</Text>
+              <Image style={styles.mainImage} source={{uri:image.src}} key = {image.src} />
+            ))}
+          </ScrollView>
+        </View>
+      );
+    }
+    return null;    
+    // return (<Image source={{ uri: product.images[0].src }} resizeMode="cover" style={styles.lookPhoto} />);
+  }
+  
 
 
 function Details(props) {

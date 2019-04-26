@@ -57,13 +57,16 @@ const Look = ({ product, addVariantToCart, navigation, passed }) =>
         <Text></Text>
         <CartAddButton product={product} addVariantToCart={addVariantToCart} price={product.variants[0].price} />
       </View>
-      <LookPhoto photo={product.images[0].src} />
+      <LookPhoto product={product} />
     </View>
     <LookDescription product={product} navigation={navigation} />
   </View>
 
-const LookPhoto = ({ photo }) =>
-  <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
+function LookPhoto ({product}) {
+   
+  return (<Image source={{ uri: product.images[0].src }} resizeMode="cover" style={styles.lookPhoto} />);
+}
+
 
 class InfluencerInfo extends React.Component {
   constructor() {
