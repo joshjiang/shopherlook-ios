@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Button, FlatList, Linking } from 'react-native';
-import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, FlatList, Linking } from 'react-native';
+import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import Client from 'shopify-buy';
-import * as base from './environment';
+import * as base from './environment'; //from environment.js file
 
 const client = Client.buildClient({ //To pull from the Shopify API
     domain: 'shopherlook.myshopify.com',
