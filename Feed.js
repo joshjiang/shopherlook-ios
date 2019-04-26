@@ -106,7 +106,7 @@ class InfluencerInfo extends React.Component {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-              id: this.state.id,
+              sellID: this.state.id,
               person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
             })}>
               <Text>{this.state.name}</Text>
@@ -136,8 +136,6 @@ class LookDescription extends React.Component {
 
 
   componentDidMount() {
-    console.log("feed: " + this.props.product.id);
-
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {

@@ -340,6 +340,7 @@ class Look extends React.Component {
         })}>
           
           <LookPicture photo={this.props.product.images[0].src} />
+          
       </TouchableOpacity>
     )
   }
