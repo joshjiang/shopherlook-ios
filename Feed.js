@@ -136,6 +136,7 @@ class LookDescription extends React.Component {
 
 
   componentDidMount() {
+    console.log("feed: " + this.props.product.id);
 
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())

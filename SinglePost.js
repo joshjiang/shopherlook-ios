@@ -176,9 +176,9 @@ class DetailsClass extends Component {
 
     products = products.filter(
       (product) => {
-        console.log("API PRODUCT ID: " + product.store_id);
-        console.log("PROPS ID: " + this.props.proID);
-        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
+        // console.log("API PRODUCT ID: " + product.store_id);
+        // console.log("PROPS ID: " + this.props.proID);
+        // console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
 
         return product.store_id.toString() === this.props.proID.toString();
       }

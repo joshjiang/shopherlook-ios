@@ -4,9 +4,9 @@ import { Ionicons, AntDesign, FontAwesome, Feather, MaterialCommunityIcons } fro
 import Client from 'shopify-buy';
 import * as base from './environment';
 
-const client = Client.buildClient({
+const client = Client.buildClient({ //To pull from the Shopify API
     domain: 'shopherlook.myshopify.com',
-    storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
+    storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN, //API key in environment.js file
 });
 
 class InfluencerProfile extends Component {
@@ -39,17 +39,11 @@ class InfluencerProfile extends Component {
         const person = navigation.getParam('person', 'noperson');
         return (
             <View style={styles.container}>
-                <ProfileContainer products={this.state.products} handle={handle} navigation={this.props.navigation} person={person} />
+                <ProfileContainer  handle={handle} navigation={this.props.navigation} person={person} products={this.state.products}/>
             </View>
         )
     }
 }
-
-// const ProfileContainer = ({product, handle, navigation}) =>
-//     <View>
-//         <ViewHeader />
-//         <InfluencerContainer product={product} handle = {handle} navigation = {navigation}/>
-//     </View>
 
 //make a profile container class 
 class ProfileContainer extends Component {
@@ -85,7 +79,7 @@ class ProfileContainer extends Component {
         return (
             <View>
                 {/* <ViewHeader /> */}
-                <InfluencerContainer pictures={this.state.pictures} handle={this.props.handle} navigation={this.props.navigation} person={this.props.person} />
+                <InfluencerContainer pictures={this.state.pictures} handle={this.props.handle} navigation={this.props.navigation} person={this.props.person} products = {this.props.products}/>
             </View>
         )
     }
@@ -101,10 +95,10 @@ class ProfileContainer extends Component {
 //     </View>
 
 //bio container: info about influencer; lookphotofeed: pics of all the objects
-const InfluencerContainer = ({ pictures, handle, navigation, person }) =>
+const InfluencerContainer = ({ pictures, handle, navigation, person, products }) =>
     <View>
         <BioContainer pictures={pictures} handle={handle} person={person} />
-        <LookFeed pictures={pictures} handle={handle} navigation={navigation} />
+        <LookFeed pictures={pictures} handle={handle} navigation={navigation} products = {products} />
     </View>
 
 // ProfileIcons: that light blue bar with influencer info 
@@ -273,9 +267,10 @@ const numColumns = 3;
 function LookFeed(props) {
     const pictures = props.pictures;
     const navigation = props.navigation;
+    const products = props.products;
 
     const listProducts = pictures.map((picture) =>
-        <LookPicture picture={picture} key={picture.date} navigation={navigation} />)
+        <LookPicture picture={picture} key={picture.date} navigation={navigation} products = {products}/>)
 
     renderItem = ({ item, index }) => {
         if (item.empty === true) {
@@ -302,9 +297,51 @@ function LookFeed(props) {
 }
 
 const LookPicture = ({ picture, navigation }) =>
-    <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+    // <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
+    <TouchableOpacity >
         <LookPhoto photo={picture.img_urls[0]} />
     </TouchableOpacity>
+
+// class LookPicture extends React.Component {
+//     constructor() {
+//       super();
+  
+//       this.state = {
+//         id: '',
+//         // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+//       };
+//     }
+
+//     componentDidMount() {
+        
+//       return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+//         .then((response) => response.json())
+//         .then((responseJson) => {
+  
+//           this.setState({
+//             id: responseJson.ID,
+//           });
+  
+//         })
+//         .catch((error) => {
+//           console.error(error);
+//         });
+//     }
+  
+//     render() {
+//       return (
+//         <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen',{
+//           productId: this.props.picture.id,
+//           id:  this.state.id, //product
+//           proID: Buffer.from(this.props.picture.id, 'base64').toString().split('/')[4],
+//           })}>
+            
+//             <LookPhoto photo={this.props.picture.img_urls[0]} />
+//         </TouchableOpacity>
+//       )
+//     }
+//   }
+
 
 const LookPhoto = ({ photo }) => //resizeMode="cover"  
     <Image
