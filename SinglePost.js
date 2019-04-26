@@ -261,10 +261,8 @@ class SinglePost extends Component {
   render() {
     const ID = this.props.navigation.getParam('id', 'noID');
     const proID = this.props.navigation.getParam('proID', 'noID');
-    console.log("THIS IS THE ID: " + ID);
-    console.log("THIS IS THE PROID: " + proID);
-
-
+    // console.log("THIS IS THE ID: " + ID);
+    // console.log("THIS IS THE PROID: " + proID);
     return (
       <View style={styles.container}>
         <Look product={this.state.product} navigation={this.props.navigation} id={ID} proID={proID} ></Look>

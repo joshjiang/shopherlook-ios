@@ -154,8 +154,6 @@ class LookDescription extends React.Component {
       });
   }
 
-
-
   render() {
 
     return (
