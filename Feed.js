@@ -9,8 +9,6 @@ import * as base from './environment';
 import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
 
-
-
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
@@ -33,11 +31,9 @@ function LookFeed(props, passed) {
   const products = props.products;
   const navigation = props.navigation;
 
-
   const listProducts = products.map((product) =>
     <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
   )
-
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -77,7 +73,6 @@ class InfluencerInfo extends React.Component {
     };
   }
 
-
   componentDidMount() {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
@@ -95,8 +90,6 @@ class InfluencerInfo extends React.Component {
         console.error(error);
       });
   }
-
-
 
   render() {
 
@@ -120,8 +113,6 @@ class InfluencerInfo extends React.Component {
     )
   }
 }
-
-
 class LookDescription extends React.Component {
   constructor() {
     super();
@@ -209,7 +200,7 @@ const CartAddButton = ({ price, product, addVariantToCart }) =>
       +  ${price}
     </Text>
   </TouchableOpacity>
-
+  
 class CartModal extends Component {
   state = {
     modalVisible: false,
@@ -275,7 +266,6 @@ class CartModal extends Component {
     );
   }
 }
-
 export default class Feed extends React.Component {
   constructor() {
     super();

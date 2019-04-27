@@ -1,28 +1,33 @@
 import React, { Component } from 'react'
-import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
+import { View, TouchableOpacity, Text, ScrollView } from 'react-native'
 import LineItem from './LineItem'
-import WebCheckout from './WebCheckout'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
+/**
+ * Cart takes LineItems from a checkout prop
+ * and opens a WebView with those items
+ */
 class Cart extends Component {
     constructor(props) {
         super(props)
-
         this.openCheckout = this.openCheckout.bind(this)
     }
 
+    /**
+     * openCheckout() Closes the Checkout component and 
+     * opens a WebView with given cart
+     */
     openCheckout() {
+        // TODO: Remove the need for a parameter in this function
         this.props.handleCartClose(false)
         this.props.navigation.navigate('WebCheckoutScreen', {
             webUrl: this.props.checkout.webUrl,
-          });('WebCheckoutScreen')
+        }); ('WebCheckoutScreen')
     }
 
     render() {
         let line_items = this.props.checkout.lineItems.map((line_item) => {
             return (
                 <LineItem
-                    updateQuantityInCart={this.props.updateQuantityInCart}
                     removeLineItemInCart={this.props.removeLineItemInCart}
                     key={line_item.id.toString()}
                     line_item={line_item}
