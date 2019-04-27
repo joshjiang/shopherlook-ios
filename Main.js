@@ -5,8 +5,7 @@ import { SearchBar } from 'react-native-elements';
 import { MaterialCommunityIcons, Feather, Foundation, Ionicons } from '@expo/vector-icons';
 import Client from 'shopify-buy';
 import * as base from './environment';
-
-
+var Buffer = require('buffer/').Buffer;
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com/',
@@ -62,7 +61,7 @@ class Main extends Component {
   // store in local component
 
   render() {
-    console.log(this.state.products);
+    // console.log(this.state.products);
     
     //const { search } = this.state;
     return (
@@ -300,69 +299,57 @@ class Disc extends Component {
   }
 }
 
+class Look extends React.Component {
+  constructor() {
+    super();
 
+    this.state = {
+      name: '',
+      handle: '',
+      id: '',
+      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+    };
+  }
 
+  componentDidMount() {
+    console.log('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]);
 
+    return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
+      .then((response) => response.json())
+      .then((responseJson) => {
 
+        this.setState({
+          name: responseJson.first_name + ' ' + responseJson.last_name,
+          handle: responseJson.instagram_handle,
+          id: responseJson.ID,
+        });
 
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
+  render() {
 
+    return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen',{
+        productId: this.props.product.id,
+        id:  this.state.id, //product
+        proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
+        })}>
+          
+          <LookPicture photo={this.props.product.images[0].src} />
+          
+      </TouchableOpacity>
+    )
+  }
+}
 
-
-//   return (
-
-//     // <Look ></Look>
-//     // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
-//     //  <View style={styles.betweenLooks}>
-//     // <View style={styles.looksStyle}>
-
-
-//     <View style={{ height: 480 }}>
-
-//     <ScrollView>
-
-
-
-//         {listProducts}
-
-
-
-
-
-
-
-
-
-//     </ScrollView>
-
-// </View>
-//     // <ScrollView >
-//     //   <Look ></Look>
-//     // </ScrollView>
-//   );
-
-
-const Look = ({ product, navigation }) =>
-
-     <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
-      productId: product.id,
-    })}>
-        
-        <LookPicture photo={product.images[0].src} />
-    </TouchableOpacity>
 
 // photo
-
 const LookPicture = ({ photo }) =>
-
   <Image source={{ uri: photo }} resizeMode="contain" style={styles.lookPhoto} />
-{/* <View></View> */ }
-
-// photo
-
-// <MaterialCommunityIcons  name="square" size={135} color="#b0daf4" />
-// <Image source={require('./img/supreme.jpg')} resizeMode="contain" size={135} />
 
 
 const BottomHeader = ({ }) =>

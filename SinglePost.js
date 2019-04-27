@@ -167,19 +167,12 @@ class DetailsClass extends Component {
   }
 
   render() {
-    // console.log("INSIDE THE RENDER: " + this.state.influencerSpecificProducts);
 
     let products = this.state.influencerSpecificProducts;
-    console.log(" THE PRO ID : " + this.props.proID);
-
-    
-
+  
     products = products.filter(
       (product) => {
-        console.log("API PRODUCT ID: " + product.store_id);
-        console.log("PROPS ID: " + this.props.proID);
-        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
-
+        
         return product.store_id.toString() === this.props.proID.toString();
       }
     )
@@ -261,10 +254,8 @@ class SinglePost extends Component {
   render() {
     const ID = this.props.navigation.getParam('id', 'noID');
     const proID = this.props.navigation.getParam('proID', 'noID');
-    console.log("THIS IS THE ID: " + ID);
-    console.log("THIS IS THE PROID: " + proID);
-
-
+    // console.log("THIS IS THE ID: " + ID);
+    // console.log("THIS IS THE PROID: " + proID);
     return (
       <View style={styles.container}>
         <Look product={this.state.product} navigation={this.props.navigation} id={ID} proID={proID} ></Look>
