@@ -50,16 +50,22 @@ const TabNavigator = createBottomTabNavigator({
         getTabBarIcon(navigation, focused, tintColor),
     }),
     tabBarOptions: {
+
+      //symbol is purple for the current view 
       activeTintColor: 'purple',
+
+      //symbol is grey for the other views
       inactiveTintColor: 'gray',
     },
 });
 
 //Symbols for the footer navigation bar
-const getTabBarIcon = (navigation, focused, tintColor) => {
+const getTabBarIcon = (navigation,tintColor) => {
   const { routeName } = navigation.state;
   let IconComponent = Ionicons;
   let iconName;
+
+  //different tabs have different symbols
   if (routeName === 'Feed') {
     iconName = `ios-people`;
   } else if (routeName === 'Discover') {
