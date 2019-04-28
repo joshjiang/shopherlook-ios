@@ -61,7 +61,7 @@ class Main extends Component {
   // store in local component
 
   render() {
-    console.log(this.state.products);
+    // console.log(this.state.products);
     
     //const { search } = this.state;
     return (
@@ -299,20 +299,6 @@ class Disc extends Component {
   }
 }
 
-// const Look = ({ product, navigation }) =>
-
-//      <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
-//       productId: product.id,
-      
-//       id:  this.state.id, //product
-//       proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-
-//       // proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-//     })}>
-        
-//         <LookPicture photo={product.images[0].src} />
-//     </TouchableOpacity>
-
 class Look extends React.Component {
   constructor() {
     super();
@@ -326,6 +312,7 @@ class Look extends React.Component {
   }
 
   componentDidMount() {
+    console.log('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]);
 
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
@@ -353,6 +340,7 @@ class Look extends React.Component {
         })}>
           
           <LookPicture photo={this.props.product.images[0].src} />
+          
       </TouchableOpacity>
     )
   }

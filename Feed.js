@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, ScrollView, View, Image, Modal, TouchableOpacity, Alert } from 'react-native';
 import Cart from './Cart';
-import LineItem from './LineItem';
 import Client from 'shopify-buy';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import Icon from '../../node_modules/react-native-vector-icons/MaterialIcons';
 import * as base from './environment';
-import { Button } from 'react-native-elements';
 var Buffer = require('buffer/').Buffer;
-
-
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
 
+/**
+ * organizes header content
+ * TODO: remove this view and move CartModal to NavHeader in App.js
+ * @children {Component} child components of header 
+ * @title {Text} title of header
+ */
 const ViewHeader = ({ title, children }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
@@ -29,15 +30,16 @@ const ViewHeader = ({ title, children }) =>
     </View>
   </View>
 
-function LookFeed(props, passed) {
+/**
+ * container for mapping each look to a ScrollView
+ */
+function LookFeed(props) {
   const products = props.products;
   const navigation = props.navigation;
 
-
   const listProducts = products.map((product) =>
-    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} passed={passed}></Look>
+    <Look product={product} key={product.title} addVariantToCart={props.addVariantToCart} navigation={navigation} ></Look>
   )
-
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -46,10 +48,16 @@ function LookFeed(props, passed) {
   );
 }
 
-const Look = ({ product, addVariantToCart, navigation, passed }) =>
+/**
+ * Feed Look with product info
+ * @product {Array} Shopify JSON object
+ * @addVariantToCart {Function} CartAddButton Functionality
+ * @navigation {Object} navigation object
+ */
+const Look = ({ product, addVariantToCart, navigation }) =>
   <View>
     <View style={{ padding: 1, backgroundColor: '#e9e8ff6f', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <InfluencerInfo product={product} passed={passed} navigation={navigation} />
+      <InfluencerInfo product={product} navigation={navigation} />
       <Text></Text>
     </View>
     <View>
@@ -62,13 +70,19 @@ const Look = ({ product, addVariantToCart, navigation, passed }) =>
     <LookDescription product={product} navigation={navigation} />
   </View>
 
-function LookPhoto ({product}) {
-   
-  return (<Image source={{ uri: product.images[0].src }} resizeMode="cover" style={styles.lookPhoto} />);
-}
+/**
+ * Shopify product image
+ * @photo {Array} Shopify url for image
+ */
+const LookPhoto = ({ photo }) =>
+  <Image source={{ uri: photo }} resizeMode="cover" style={styles.lookPhoto} />
 
-
-class InfluencerInfo extends React.Component {
+/**
+ * Contains instagram info and navigation to individual influencer page
+ * Passes a product id and parses to shopherlook influencerid to get influencer data
+ * TODO: add instagram image to info snippet
+ */
+class InfluencerInfo extends Component {
   constructor() {
     super();
 
@@ -76,10 +90,8 @@ class InfluencerInfo extends React.Component {
       name: '',
       handle: '',
       id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
     };
   }
-
 
   componentDidMount() {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
@@ -99,8 +111,6 @@ class InfluencerInfo extends React.Component {
       });
   }
 
-
-
   render() {
 
     return (
@@ -109,7 +119,7 @@ class InfluencerInfo extends React.Component {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-              id: this.state.id,
+              sellID: this.state.id,
               person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
             })}>
               <Text>{this.state.name}</Text>
@@ -124,8 +134,12 @@ class InfluencerInfo extends React.Component {
   }
 }
 
-
-class LookDescription extends React.Component {
+/**
+ * Contains instagram info and navigation to individual influencer page
+ * Passes a product id and parses to shopherlook influencerid to get influencer data
+ * TODO: add instagram image to info snippet
+ */
+class LookDescription extends Component {
   constructor() {
     super();
 
@@ -137,20 +151,15 @@ class LookDescription extends React.Component {
     };
   }
 
-
   componentDidMount() {
-
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {
-
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
           id: responseJson.ID,
-
         });
-
       })
       .catch((error) => {
         console.error(error);
@@ -158,38 +167,24 @@ class LookDescription extends React.Component {
   }
 
   render() {
-
     return (
       <View>
-
         <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen', {
           productId: this.props.product.id, //person
-          id:  this.state.id, //product
+          id: this.state.id, //product
           proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
         })} >
-
           <Text style={styles.lookTitle}> {this.props.product.title} </Text>
         </TouchableOpacity>
-
         <Text style={styles.lookDescription}>{this.props.product.description.split('Product Description ')[1]}</Text>
       </View>
     )
   }
 }
 
-// const LookDescription = ({navigation, product}) =>
-// <View>
-
-//   <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen',{
-//     productId: product.id,
-//   })} >
-
-//     <Text style={styles.lookTitle}> {product.title} </Text>
-//   </TouchableOpacity>
-
-//   <Text style={styles.lookDescription}>{product.description.split('Product Description ')[1]}</Text>
-// </View>
-
+/**
+ * adds lineitem to client cart object
+ */
 const CartAddButton = ({ price, product, addVariantToCart }) =>
   <TouchableOpacity style={{
     marginRight: 15,
@@ -206,11 +201,13 @@ const CartAddButton = ({ price, product, addVariantToCart }) =>
     onPress={
       () => addVariantToCart(product.variants[0].id, 1)
     }>
-    <Text>
-      +  ${price}
-    </Text>
+    <Text> +  ${price} </Text>
   </TouchableOpacity>
 
+/**
+* cart popup overlay on feedview
+* TODO: implement this modal accross all views
+*/
 class CartModal extends Component {
   state = {
     modalVisible: false,
@@ -242,7 +239,6 @@ class CartModal extends Component {
               <Cart
                 navigation={this.props.navigation}
                 checkout={this.props.checkout}
-                isCartOpen={this.props.isCartOpen}
                 handleCartClose={this.setModalVisible.bind(this)}
                 removeLineItemInCart={this.props.removeLineItemInCart} />
             </View>
@@ -255,21 +251,6 @@ class CartModal extends Component {
             this.setModalVisible(true);
             console.log(this.props.isCartOpen);
           }}>
-          {/* <View style={{
-            height: 20,
-            width: 20,
-            borderRadius: 10,
-            borderWidth: 0.5,
-            borderColor: '#fff',
-            top: 30,
-            left:18,
-            zIndex: 10,
-          }}> */}
-            {/* <Text style={{
-              textAlign: 'center',
-              color: '#fff'
-            }}></Text> */}
-          {/* </View> */}
           <Icon name="shopping-cart" size={30} />
         </TouchableOpacity>
       </View>
@@ -277,7 +258,10 @@ class CartModal extends Component {
   }
 }
 
-export default class Feed extends React.Component {
+/**
+* container class for individual products
+*/
+export default class Feed extends Component {
   constructor() {
     super();
 
@@ -380,14 +364,11 @@ export default class Feed extends React.Component {
 
     return (
       <View style={styles.container} >
-        <ViewHeader title="FEED">
+        <ViewHeader >
           <CartModal
             navigation={this.props.navigation}
             checkout={this.state.checkout}
-            isCartOpen={this.state.isCartOpen}
             handleCartClose={this.handleCartClose}
-            handleCartOpen={this.handlCartOpen}
-            updateQuantityInCart={this.updateQuantityInCart}
             removeLineItemInCart={this.removeLineItemInCart} />
         </ViewHeader>
         <LookFeed products={this.state.products} addVariantToCart={this.addVariantToCart.bind(this)} navigation={this.props.navigation} />
@@ -408,7 +389,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 0,
-    marginBottom: 20,
+    marginBottom: 0,
   },
   influencerPhoto: {
     height: 50,

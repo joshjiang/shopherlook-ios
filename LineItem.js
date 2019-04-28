@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Image, TouchableOpacity, Text } from 'react-native';
 
-
+// A Line Item is a look added to the cart
 const LineItem = ({ line_item, removeLineItemInCart }) =>
     <View style={{ height: 80, marginTop:10 }}>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>

@@ -194,19 +194,12 @@ class DetailsClass extends Component {
   }
 
   render() {
-    // console.log("INSIDE THE RENDER: " + this.state.influencerSpecificProducts);
 
     let products = this.state.influencerSpecificProducts;
-    console.log(" THE PRO ID : " + this.props.proID);
-
-    
-
+  
     products = products.filter(
       (product) => {
-        console.log("API PRODUCT ID: " + product.store_id);
-        console.log("PROPS ID: " + this.props.proID);
-        console.log("TRUE OR FALSE: " + (product.store_id.toString() === this.props.proID.toString()));
-
+        
         return product.store_id.toString() === this.props.proID.toString();
       }
     )
