@@ -5,7 +5,7 @@ SHOPHerLOOK iOS application using React Native
 ### Installation
 
     git clone https://github.com/joshjiang/shopherlook-ios.git
-    cd /shopherlook-ios
+    cd shopherlook-ios
     npm install 
 
 Install any other dependencies that the terminal requires that you install. Only required dependencies need to be installed, not optional ones.
