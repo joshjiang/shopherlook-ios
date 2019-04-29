@@ -43,24 +43,28 @@ const TabNavigator = createBottomTabNavigator({
 
 }, 
 
+      //symbol is purple for the current view 
+
+      //symbol is grey for the other views
+
 //Dynamic changes to the footer design based on what route/view is chosen
 {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) =>
         getTabBarIcon(navigation, focused, tintColor),
-    }),
+    }
+    ),
+
     tabBarOptions: {
 
-      //symbol is purple for the current view 
       activeTintColor: 'purple',
 
-      //symbol is grey for the other views
       inactiveTintColor: 'gray',
     },
 });
 
 //Symbols for the footer navigation bar
-const getTabBarIcon = (navigation,tintColor) => {
+const getTabBarIcon = (navigation,foucused, tintColor) => {
   const { routeName } = navigation.state;
   let IconComponent = Ionicons;
   let iconName;
@@ -69,9 +73,9 @@ const getTabBarIcon = (navigation,tintColor) => {
   if (routeName === 'Feed') {
     iconName = `ios-people`;
   } else if (routeName === 'Discover') {
-    iconName = `ios-flower`
+    iconName = `ios-flower`;
   } else if (routeName === 'Settings') {
-    iconName = `ios-options`
+    iconName = `ios-options`;
   }
 
   //Returns the specific symbol based on what route is selected
