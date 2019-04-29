@@ -43,10 +43,6 @@ const TabNavigator = createBottomTabNavigator({
 
 }, 
 
-      //symbol is purple for the current view 
-
-      //symbol is grey for the other views
-
 //Dynamic changes to the footer design based on what route/view is chosen
 {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -56,9 +52,11 @@ const TabNavigator = createBottomTabNavigator({
     ),
 
     tabBarOptions: {
-
+      
+      //symbol is purple for the current view 
       activeTintColor: 'purple',
 
+      //symbol is grey for the other views
       inactiveTintColor: 'gray',
     },
 });

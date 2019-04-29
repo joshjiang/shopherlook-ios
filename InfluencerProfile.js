@@ -15,14 +15,27 @@ const client = Client.buildClient({
 });
 
 class InfluencerProfile extends Component {
-    constructor() {
-        super();
+    
+    constructor(props) {
+        
+        super(props);
+        
+
+        const { navigation } = this.props;
 
         this.state = {
 
             //array of all available products
             products: [], 
+            sellingID: '',
+            personID: '',
+            navigation: navigation
+            // sellingID: navigation.getParam('sellID', 'noid'),
+            // personID: navigation.getParam('person', 'noperson')
+ 
         };
+
+        
     }
 
     //text shown in the header
@@ -37,25 +50,36 @@ class InfluencerProfile extends Component {
             this.setState({
                 products: res,
             });
+
         }).catch(function (error) {
             console.log('There has been a problem with your fetch operation: ' + error.message);
             throw error;
         });;
+
+        
     }
 
+    
     render() {
-        //get the parameter arguments passed through nav
+        // get the parameter arguments passed through nav
         const { navigation } = this.props;
 
         //ID to get items person is selling
-        const sellingID = navigation.getParam('sellID', 'noid'); 
+        const sellingID = this.state.navigation.getParam('sellID', 'noid'); 
 
         //ID to get information about the person
-        const personID = navigation.getParam('person', 'noperson'); 
+        const personID = this.state.navigation.getParam('person', 'noperson'); 
 
+        // this.setState({
+        //     sellingID: sellingID,
+        //     personID: personID
+            
+        // });
         return (
             <View style={styles.container}>
                 <ProfileContainer sellingID={sellingID} navigation={this.props.navigation} personID={personID} products={this.state.products} />
+                {/* <ProfileContainer sellingID={this.state.sellingID} navigation={this.props.navigation} personID={this.state.personID} products={this.state.products} /> */}
+
             </View>
         )
     }
