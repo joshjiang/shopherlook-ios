@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`Feed test against snapshot 1`] = `
 <View
   style={
     Object {
@@ -34,7 +34,16 @@ exports[`renders correctly 1`] = `
           "width": 50,
         }
       }
-    />
+    >
+      <Text
+        style={
+          Object {
+            "fontSize": 15,
+            "paddingLeft": 10,
+          }
+        }
+      />
+    </View>
     <View
       style={
         Object {
