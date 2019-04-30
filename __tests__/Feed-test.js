@@ -42,3 +42,4 @@ describe('ViewHeader', () => {
         ).toBe(`${title}`);
     });
 });
+
