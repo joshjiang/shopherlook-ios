@@ -11,6 +11,10 @@ const client = Client.buildClient({
   storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN,
 });
 
+/**
+ * stock sample user is used to act as a filler for any parts of the code that is unfinished. 
+ * example: sample user photo can be used until a proper header is made
+ */
 const sampleUser = {
   photo: 'https://cdn1.vectorstock.com/i/1000x1000/26/45/young-executive-woman-profile-icon-vector-9692645.jpg',
   name: 'Janet Doe'
@@ -26,264 +30,153 @@ const sampleItem = {
 
 }
 
-
+/**
+ * container class for individual components
+ */
 class Look extends React.Component {
   constructor() {
     super();
   }
   render() {
-
-
-    
     if (this.props.product.images != undefined) {
       imagesrc = this.props.product.images[0].src
-
     }
     descriptionSplit = this.props.product.description
     if (this.props.product.description != undefined) {
       descriptionSplit = this.props.product.description.split('Product Description ')[1];
     }
-    
-   
-
     return (
       <View>
         <ScrollView>
-          {/* <NameBar user={sampleUser} navigation={this.props.navigation} product={this.props.product} /> */}
-          {/* <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} /> */}
-          <LookPhoto product = {this.props.product}></LookPhoto>
-          <Title product={this.props.product} />
-          <Description descriptionSplit = {descriptionSplit} />
-          {/* <Details product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} /> */}
+          <LookPhoto product={this.props.product}></LookPhoto>
+          <Title title={this.props.product.title} />
+          <Description descriptionSplit={descriptionSplit} />
+          <DetailsTitle title="Details" />
           <DetailsClass product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} />
-
         </ScrollView>
       </View>
-
     )
   }
 }
 
-// class NameBar extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       name: '',
-//       handle: '',
-//       id: '',
-    
-//     };
-//   }
-
-
-//   componentDidMount() {
-
-//     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
-//       .then((response) => response.json())
-//       .then((responseJson) => {
-
-//         this.setState({
-//           name: responseJson.first_name + ' ' + responseJson.last_name,
-//           handle: responseJson.instagram_handle,
-//           id: responseJson.ID,
-//         });
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   }
-
-//   render() {
-
-//     return (
-//       <View style={styles.nameBar}>
-//         <Image
-//           style={{ width: 40, height: 40, borderRadius: 20 }}
-//           source={{ uri: this.props.user.photo }}
-//         />
-
-//         <TouchableOpacity onPress={() => this.props.navigation.navigate('InfluencerProfileScreen', {
-//           id: this.state.id,
-//           person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4]
-//         })}>
-//           <Text>{this.state.name}</Text>
-//         </TouchableOpacity>
-//       </View>
-//     )
-//   }
-// }
-
-
-function ImageClothes({ photo }) {
-  return (<Image
-    resizeMode="cover"
-    style={styles.mainImage}
-    source={{ uri: photo }}
-  />)
-
-}
-
-
-// const LookPhoto = ({ imagesrc }) =>
-//   <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} />
-
-  function LookPhoto ({product}) {
-    const { images } = product;
-  
-    if (images && images.length) {
-      return (
-        <View
-          style={styles.scrollContainer}
+/**
+ * presents and formats the images associated with a product with a sliding image picker for multiple images
+ */
+function LookPhoto({ product }) {
+  const { images } = product;
+  if (images && images.length) {
+    return (
+      <View
+        style={styles.scrollContainer}
+      >
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
         >
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-          >
-            {images.map(image => (
-              // <Text key = {image.src}>{image.src}</Text>
-              <Image style={styles.mainImage} source={{uri:image.src}} key = {image.src} />
-            ))}
-          </ScrollView>
-        </View>
-      );
-    }
-    return null;    
-    // return (<Image source={{ uri: product.images[0].src }} resizeMode="cover" style={styles.lookPhoto} />);
+          {images.map(image => (
+            <Image style={styles.mainImage} source={{ uri: image.src }} key={image.src} />
+          ))}
+        </ScrollView>
+      </View>
+    );
   }
-  
-
-
-function Details(props) {
-  console.log("THIS IS THE ID: " + props.id);
-  console.log("THIS IS THE PROID: " + props.proID);
-
-
-
-  return (
-    <View style={styles.details}>
-      {/* <Text style={{ fontSize: 30, marginBottom: 5 }}>Details</Text>
-    <Text style={{ marginHorizontal: 30 }}>Size: {item.size}</Text>
-    <Text style={{ marginHorizontal: 30 }}>Brand: {item.brand}</Text>
-    <Text style={{ marginHorizontal: 30 }}>Condition: {item.condition}</Text> */}
-    </View>
-  )
+  return null;
 }
 
+/**
+ * adds the title to preceed the details class
+ */
+export function DetailsTitle({ title }) {
+  return (<Text style={{ fontSize: 20, marginBottom: 5, marginLeft: 5, fontWeight: 'bold',  fontFamily: 'Baskerville' }}>{title}</Text>)
+}
+
+/**
+ *  pulls and adds the details associated with a particular product. Details pulled include size brand and condition
+ */
 class DetailsClass extends Component {
   constructor() {
     super();
-
     this.state = {
       influencerSpecificProducts: []
     };
-
   }
-
   componentDidMount() {
     console.log("INSIDE THE DID MOUNT: " + 'https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.id);
-
     return fetch('https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.id)
       .then((response) => response.json())
       .then((responseJson) => {
-
         this.setState({
           influencerSpecificProducts: responseJson
         });
-
       }).catch((error) => {
         console.error(error);
       });
-
-
   }
-
   render() {
-
     let products = this.state.influencerSpecificProducts;
-  
     products = products.filter(
       (product) => {
-        
         return product.store_id.toString() === this.props.proID.toString();
       }
     )
-
     const sizeProducts = products.map((product) =>
       <Text style={{ marginHorizontal: 30 }} key={product.ID} > Size: {product.size}</Text>
     )
-
     const brandProducts = products.map((product) =>
       <Text style={{ marginHorizontal: 30 }} key={product.ID} > Brand: {product.brand}</Text>
     )
-    
     const conditionProducts = products.map((product) =>
       <Text style={{ marginHorizontal: 30 }} key={product.ID} > Condition: {product.condition}</Text>
     )
-
-      return (
-        <View> 
-          <Text style={{ fontSize: 30, marginBottom: 5, marginLeft: 5}}>Details</Text>
-          {sizeProducts}
-          {brandProducts}
-          {conditionProducts}
-        </View>
-      )
+    return (
+      <View>
+        {sizeProducts}
+        {brandProducts}
+        {conditionProducts}
+      </View>
+    )
   }
-
 }
 
-
-
-
-
-
-
-function Title({ product }) {
-  return (<Text style={styles.title}>{product.title}</Text>)
+/**
+ * adds the title of the product
+ */
+export function Title({ title }) {
+  return (<Text style={styles.title}>{title}</Text>)
 }
 
+/**
+ * adds the description of the product
+ */
 export function Description({ descriptionSplit }) {
- 
-
   return (<Text style={styles.description}>{descriptionSplit}</Text>)
 }
 
-
+/**
+ * container to fetch the product and make an instance of the look container
+ */
 class SinglePost extends Component {
   constructor() {
     super();
-
     this.state = {
       product: {},
     };
   }
-
   static navigationOptions = {
     title: 'Item',
   };
-
   componentDidMount() {
-    const productId = this.props.navigation.getParam('productId','"noproduct"');
-
-
+    const productId = this.props.navigation.getParam('productId', '"noproduct"');
     client.product.fetch(productId).then((res) => {
-      // Do something with the product
       this.setState({
         product: res,
       });
-
-      //  console.log(this.state.product.images[0].src);
-      //  console.log("this is the product id: " + productId);
-      //  console.log("idk man: " + Buffer.from(this.state.product.id, 'base64').toString().split('/')[4]);
     });
   }
-
   render() {
     const ID = this.props.navigation.getParam('id', 'noID');
     const proID = this.props.navigation.getParam('proID', 'noID');
-    // console.log("THIS IS THE ID: " + ID);
-    // console.log("THIS IS THE PROID: " + proID);
     return (
       <View style={styles.container}>
         <Look product={this.state.product} navigation={this.props.navigation} id={ID} proID={proID} ></Look>
@@ -291,7 +184,6 @@ class SinglePost extends Component {
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -304,7 +196,8 @@ const styles = StyleSheet.create({
   mainImage: {
     resizeMode: 'cover',
     height: 400,
-    width: 420
+    width: 420,
+   
   },
   nameBar: {
     width: 100 + "%",
@@ -312,7 +205,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(255,255,255)",
     flexDirection: "row",
     marginHorizontal: 10,
-    marginTop: 10
+    marginTop: 10,
+    fontFamily: 'Helvetica'
   },
   tempHeader: {
     width: 100 + "%",
@@ -322,27 +216,27 @@ const styles = StyleSheet.create({
     borderBottomColor: "rgb(233,233,233)",
     borderBottomWidth: StyleSheet.hairlineWidth,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    fontFamily: 'Helvetica'
   },
   title: {
     fontSize: 30,
-    marginLeft: 15,
     marginTop: 20,
-    fontFamily: 'Helvetica'
+    fontFamily: 'Baskerville'
 
   },
   description: {
     marginHorizontal: 25,
     fontSize: 15,
-    fontFamily: 'Helvetica'
-
+    fontFamily: 'Baskerville'
+    
   },
   details: {
     marginHorizontal: 25,
     marginTop: 10,
+    fontFamily: 'Baskerville'
   }
 
 });
-
 
 export default SinglePost

@@ -144,7 +144,6 @@ class LookDescription extends Component {
       name: '',
       handle: '',
       id: '',
-      // person: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
     };
   }
 

@@ -1,9 +1,14 @@
 import React from 'react';
 import Main from '../Main';
+<<<<<<< HEAD
 import Disc from '../Main';
 import LookPicture from '../Main';
 import { SearchBar } from 'react-native-elements';
 import {FlatList} from 'react-native';
+=======
+import Look from '../Main';
+import { Image} from 'react-native'
+>>>>>>> b6c0f3479c965afeeffca45ea260cfc4dc1286c8
 
 
 import renderer from 'react-test-renderer';

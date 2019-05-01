@@ -76,7 +76,7 @@ const Options = ({ }) =>
         <Help />
     </View>
 
-const Notifications = ({ }) =>
+export const Notifications = ({ }) =>
 
     <View style={styles.not}>
         <MaterialCommunityIcons name="bell" size={30} style={styles.padBlue} />
