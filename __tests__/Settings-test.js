@@ -6,6 +6,8 @@ import ViewHeader from '../Settings';
 import Banner from '../Settings';
 import {Text} from 'react-native';
 import {SimpleLineIcons} from '@expo/vector-icons';
+import Notifications from '../Settings';
+
 
 
 describe('<Settings />', async () => {
@@ -55,3 +57,15 @@ describe('Banner', () => {
     });
 });
 
+describe('Notifications', () => {
+        it('renders the correct text', () => {
+            const st = 'Notifications';
+    
+            const inst = renderer.create(
+                <Notifications/>
+            );
+            expect(
+                inst.root.findAllByType(Text)[5].props.children
+            ).toBe(`${st}`);
+        });
+    });

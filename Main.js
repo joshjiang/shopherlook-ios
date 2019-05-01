@@ -20,7 +20,7 @@ class Main extends Component {
   static navigationOptions = {
     title: 'Discover',
   };
-  
+
 
   // make call to api
   // store in local component
@@ -31,11 +31,11 @@ class Main extends Component {
       });
     });
   }
-  
+
 
   render() {
-    
-    return ( 
+
+    return (
       <View style={styles.container}>
         <DiscoverContainer products={this.state.products} navigation={this.props.navigation} />
       </View>
@@ -44,7 +44,7 @@ class Main extends Component {
 }
 
 // ui container for shopify data and navigation
-const DiscoverContainer = ({ products, navigation }) =>
+export const DiscoverContainer = ({ products, navigation }) =>
   <View>
     <Disc products={products} larry={"asfasdf"} navigation={navigation} />
   </View>
@@ -66,7 +66,7 @@ const formatData = (data, numColumns) => {
 const numColumns = 3;
 
 
-class Disc extends Component {
+export class Disc extends Component {
 
   constructor() {
     super();
@@ -167,14 +167,14 @@ class Look extends React.Component {
   render() {
 
     return (
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen',{
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('SinglePostScreen', {
         productId: this.props.product.id,
-        id:  this.state.id, //product
+        id: this.state.id, //product
         proID: Buffer.from(this.props.product.id, 'base64').toString().split('/')[4],
-        })}>
-          
-          <LookPicture photo={this.props.product.images[0].src} />
-          
+      })}>
+
+        <LookPicture photo={this.props.product.images[0].src} />
+
       </TouchableOpacity>
     )
   }
@@ -182,7 +182,7 @@ class Look extends React.Component {
 
 
 // discover thumbnails
-const LookPicture = ({ photo }) =>
+export const LookPicture = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="contain" style={styles.lookPhoto} />
 
 
@@ -190,7 +190,7 @@ const LookPicture = ({ photo }) =>
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
+
   },
   header: {
     justifyContent: 'space-between',
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 10
   },
-  
+
   filterStyle: {
     justifyContent: 'space-between',
     flexDirection: 'row',
