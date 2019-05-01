@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native';
-import { Ionicons, SimpleLineIcons, FontAwesome, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
-
-
-
+import { View, Text, StyleSheet } from 'react-native';
+import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 class Settings extends Component {
-
-    static navigationOptions = {
-        title: 'Settings',
-    };
 
     render() {
         return (
@@ -20,28 +13,20 @@ class Settings extends Component {
     }
 }
 
-const ProfileContainer = ({ }) =>
+const ProfileContainer = () =>
     <View>
         <ViewHeader />
         <MainContainer />
-
     </View>
 
-
-const ViewHeader = ({ }) =>
-    //<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-    // <MaterialCommunityIcons name="square" size={32} color='white' />
+// page title 
+export const ViewHeader = () =>
     <View style={styles.welcomeContainer}>
-
-
         <Text style={styles.blue}>Settings</Text>
-
-
-
     </View>
 
 
-const MainContainer = ({ looks }) =>
+const MainContainer = () =>
     <View>
         <Banner />
         <Info />
@@ -49,25 +34,22 @@ const MainContainer = ({ looks }) =>
     </View>
 
 
-const Banner = ({ }) =>
+export const Banner = ({ }) =>
 
     <View style={styles.bannerContainer}>
         <SimpleLineIcons name="user" size={80} style={styles.center} />
-
-
     </View>
 
 
-const Info = ({ }) =>
+export const Info = ({ }) =>
 
     <View style={styles.infoContainer}>
-
-
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between' }}>
                 <Text style={styles.leftAll} >
                     Bilbo Baggins
                 </Text>
+
                 <Text style={styles.leftAl} >
                     @baggypants
                 </Text>
@@ -75,24 +57,13 @@ const Info = ({ }) =>
 
             <Button />
 
-
         </View>
-
-
-
     </View>
 
 
 const Button = ({ }) =>
 
-    <View style={styles.buttonContainer}>
-
-    </View>
-
-
-
-
-
+    <View style={styles.buttonContainer}> </View>
 
 const Options = ({ }) =>
 
@@ -105,26 +76,16 @@ const Options = ({ }) =>
         <Help />
     </View>
 
-
-
 const Notifications = ({ }) =>
 
-
-
-    //<View style={{ flexDirection: 'row', alignItems: 'left', justifyContent: 'space-between' }}>
     <View style={styles.not}>
         <MaterialCommunityIcons name="bell" size={30} style={styles.padBlue} />
-
 
         <Text style={styles.padText} >
             Notifications
         </Text>
 
     </View>
-
-
-
-
 
 const Following = ({ }) =>
     <View style={styles.fol}>
@@ -140,7 +101,6 @@ const Requests = ({ }) =>
     <View style={styles.not}>
 
         <MaterialCommunityIcons name="bell" size={30} style={styles.padBlue} />
-
 
         <Text style={styles.padText} >
             Account
@@ -243,13 +203,13 @@ const styles = StyleSheet.create({
     },
 
 
-    
+
     padText: {
 
         color: "black",
         //'#4B9CD3',
         paddingTop: 7
-        
+
 
     },
 
@@ -356,5 +316,6 @@ const styles = StyleSheet.create({
     }
 
 });
+
 
 export default Settings;

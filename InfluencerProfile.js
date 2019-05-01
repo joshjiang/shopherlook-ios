@@ -2,51 +2,91 @@ import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity, Dimensions, FlatList, Linking } from 'react-native';
 import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import Client from 'shopify-buy';
-import * as base from './environment'; //from environment.js file
 
-const client = Client.buildClient({ //To pull from the Shopify API
+//from environment.js file
+import * as base from './environment'; 
+
+//To pull from the Shopify API
+const client = Client.buildClient({ 
     domain: 'shopherlook.myshopify.com',
-    storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN, //API key in environment.js file
+
+    //API key in environment.js file
+    storefrontAccessToken: base.SHOPIFY_ACCESS_TOKEN, 
 });
 
 class InfluencerProfile extends Component {
-    constructor() {
-        super();
+    
+    constructor(props) {
+        
+        super(props);
+        
+
+        const { navigation } = this.props;
 
         this.state = {
-            products: [], //array of all available products
+
+            //array of all available products
+            products: [], 
+            sellingID: '',
+            personID: '',
+            navigation: navigation
+            // sellingID: navigation.getParam('sellID', 'noid'),
+            // personID: navigation.getParam('person', 'noperson')
+ 
         };
+
+        
     }
-    static navigationOptions = { //text shown in the header
+
+    //text shown in the header
+    static navigationOptions = { 
         title: 'Profile',
     };
 
     componentDidMount() {
-        return client.product.fetchAll().then((res) => { //fetch product info from Shopify
+
+        //fetch product info from Shopify
+        return client.product.fetchAll().then((res) => { 
             this.setState({
                 products: res,
             });
+
         }).catch(function (error) {
             console.log('There has been a problem with your fetch operation: ' + error.message);
             throw error;
         });;
+
+        
     }
 
+    
     render() {
-        //get the parameter arguments passed through nav
+        // get the parameter arguments passed through nav
         const { navigation } = this.props;
-        const sellingID = navigation.getParam('sellID', 'noid'); //ID to get items person is selling
-        const personID = navigation.getParam('person', 'noperson'); //ID to get information about the person
+
+        //ID to get items person is selling
+        const sellingID = this.state.navigation.getParam('sellID', 'noid'); 
+
+        //ID to get information about the person
+        const personID = this.state.navigation.getParam('person', 'noperson'); 
+
+        // this.setState({
+        //     sellingID: sellingID,
+        //     personID: personID
+            
+        // });
         return (
             <View style={styles.container}>
                 <ProfileContainer sellingID={sellingID} navigation={this.props.navigation} personID={personID} products={this.state.products} />
+                {/* <ProfileContainer sellingID={this.state.sellingID} navigation={this.props.navigation} personID={this.state.personID} products={this.state.products} /> */}
+
             </View>
         )
     }
 }
 
-
-class ProfileContainer extends Component { //class that contains all of the components
+//class that contains all of the components
+class ProfileContainer extends Component { 
     constructor() {
         super();
 
@@ -55,7 +95,9 @@ class ProfileContainer extends Component { //class that contains all of the comp
         };
     }
 
-    componentDidMount() { //fetch  all products for the specific person from Duke API
+    componentDidMount() { 
+        
+        //fetch  all products for the specific person from Duke API
         return fetch('https://shopherlook-sell.app/API/postsByProfileID?profileID=' + this.props.sellingID)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -108,12 +150,17 @@ class InfluencerInfo extends Component {
         super();
 
         this.state = {
-            name: "", //name of influencer
-            handle: "", //handle of influencer
+            //name of influencer
+            name: "", 
+
+            //handle of influencer
+            handle: "", 
         };
     }
 
-    componentDidMount() { //fetch name and handle info from Duke API
+    componentDidMount() {
+
+        //fetch name and handle info from Duke API 
         return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + this.props.personID)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -163,11 +210,14 @@ class InstagramLinkClass extends Component {
         super();
 
         this.state = {
-            handle: "", //handle of the Influencer
+
+            //handle of the Influencer
+            handle: "", 
         };
     }
 
-    componentDidMount() { //pull handle information from Duke API
+    //pull handle information from Duke API
+    componentDidMount() { 
         return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + this.props.personID)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -184,14 +234,18 @@ class InstagramLinkClass extends Component {
     render() {
         const str = this.state.handle;
 
-        let url = ''; //url of the influencer's Instagram account
-        if (str.charAt(0) == '@') { //account for handles that have '@' and handles that don't (from API)
+        //url of the influencer's Instagram account
+        let url = ''; 
+
+        //account for handles that have '@' and handles that don't (from API)
+        if (str.charAt(0) == '@') { 
             url = "https://www.instagram.com/" + str.slice(1);
         } else {
             url = "https://www.instagram.com/" + str;
         }
 
-        return ( //instagram symbol with click to go to URL functionality
+        return ( 
+            //instagram symbol with click to go to URL functionality
             <AntDesign 
                 name="instagram" 
                 size={30} 
@@ -202,7 +256,8 @@ class InstagramLinkClass extends Component {
     }
 }
 
-const Add = ({ }) => //add symbol with future follow functionality (none yet)
+//add symbol with future follow functionality (none yet)
+const Add = ({ }) => 
     <AntDesign name="plus" size={30} style={styles.space2} />
 
 //INSTA TODO: get info from Instagram API (not implemented), currently static text
@@ -232,7 +287,8 @@ const formatData = (data, numColumns) => {
     return data;
 };
 
-const numColumns = 3; //number of columns of photos 
+//number of columns of photos 
+const numColumns = 3; 
 
 function LookFeed(props) {
     const pictures = props.pictures;
@@ -242,7 +298,8 @@ function LookFeed(props) {
     const listProducts = pictures.map((picture) =>
         <LookPicture picture={picture} key={picture.date} navigation={navigation} products={products} />)
 
-    renderItem = ({ item }) => { //function used in FlatList component to organize photos
+    //function used in FlatList component to organize photos
+    renderItem = ({ item }) => { 
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
@@ -392,3 +449,4 @@ const styles = StyleSheet.create({
 });
 
 export default InfluencerProfile;
+

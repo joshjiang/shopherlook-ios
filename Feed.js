@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, Modal, TouchableOpacity, Alert } from 'react-native';
-import Cart from './Cart';
-import Client from 'shopify-buy';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import * as base from './environment';
-var Buffer = require('buffer/').Buffer;
+import React, { Component } from 'react'
+import { StyleSheet, Text, ScrollView, View, Image, Modal, TouchableOpacity, Alert } from 'react-native'
+import Cart from './Cart'
+import Client from 'shopify-buy'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import * as base from './environment'
+var Buffer = require('buffer/').Buffer
 
 const client = Client.buildClient({
   domain: 'shopherlook.myshopify.com',
@@ -17,13 +17,13 @@ const client = Client.buildClient({
  * @children {Component} child components of header 
  * @title {Text} title of header
  */
-const ViewHeader = ({ title, children }) =>
+export const ViewHeader = ({ title, children }) =>
   <View style={styles.welcomeContainer}>
     <View style={{ width: 50 }}>
       <Text></Text>
     </View>
     <View style={{ width: 50 }}>
-      {/* <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text> */}
+      <Text style={{ fontSize: 15, paddingLeft: 10 }}>{title}</Text>
     </View>
     <View style={{ width: 50 }}>
       {children}
@@ -82,7 +82,7 @@ const LookPhoto = ({ photo }) =>
  * Passes a product id and parses to shopherlook influencerid to get influencer data
  * TODO: add instagram image to info snippet
  */
-class InfluencerInfo extends Component {
+export class InfluencerInfo extends Component {
   constructor() {
     super();
 
@@ -97,14 +97,11 @@ class InfluencerInfo extends Component {
     return fetch('https://shopherlook-sell.app/API/profileByStoreID/?storeID=' + Buffer.from(this.props.product.id, 'base64').toString().split('/')[4])
       .then((response) => response.json())
       .then((responseJson) => {
-
         this.setState({
           name: responseJson.first_name + ' ' + responseJson.last_name,
           handle: responseJson.instagram_handle,
           id: responseJson.ID,
-
         });
-
       })
       .catch((error) => {
         console.error(error);
@@ -185,7 +182,7 @@ class LookDescription extends Component {
 /**
  * adds lineitem to client cart object
  */
-const CartAddButton = ({ price, product, addVariantToCart }) =>
+export const CartAddButton = ({ price, product, addVariantToCart }) =>
   <TouchableOpacity style={{
     marginRight: 15,
     borderRadius: 4,
@@ -201,14 +198,14 @@ const CartAddButton = ({ price, product, addVariantToCart }) =>
     onPress={
       () => addVariantToCart(product.variants[0].id, 1)
     }>
-    <Text> +  ${price} </Text>
+    <Text>{" +  $" + price}</Text>
   </TouchableOpacity>
 
 /**
 * cart popup overlay on feedview
 * TODO: implement this modal accross all views
 */
-class CartModal extends Component {
+export class CartModal extends Component {
   state = {
     modalVisible: false,
   };
@@ -233,7 +230,7 @@ class CartModal extends Component {
                 style={{ zIndex: 100 }}
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
-                  console.log(this.props.isCartOpen);
+                  this.props.handleCartClose;
                 }}>
                 <Text style={{ fontSize: 30, color: '#00000088', fontWeight: 'bold', textAlign: 'right', paddingRight: 30, top: 45 }}>x</Text></TouchableOpacity>
               <Cart
@@ -249,7 +246,7 @@ class CartModal extends Component {
           alignItems='center'
           onPress={() => {
             this.setModalVisible(true);
-            console.log(this.props.isCartOpen);
+            this.props.handleCartOpen;
           }}>
           <Icon name="shopping-cart" size={30} />
         </TouchableOpacity>
@@ -359,13 +356,14 @@ export default class Feed extends Component {
     });
   }
 
-
   render() {
 
     return (
       <View style={styles.container} >
         <ViewHeader >
           <CartModal
+            handleCartClose={this.props.handleCartClose}
+            handleCartOpen={this.props.handleCartOpen}
             navigation={this.props.navigation}
             checkout={this.state.checkout}
             handleCartClose={this.handleCartClose}
