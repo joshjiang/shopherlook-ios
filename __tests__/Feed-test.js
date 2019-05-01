@@ -4,6 +4,7 @@ import Feed, { CartAddButton, ViewHeader} from '../Feed';
 import renderer from 'react-test-renderer';
 import { JestEnvironment } from '@jest/environment';
 
+
 describe('<Feed />', async () => {
     it('has 1 child', () => {
         const tree = renderer.create(<Feed />).toJSON();
@@ -19,10 +20,12 @@ test('Feed test against snapshot', async () => {
 describe('Cart Add button', () => {
     it('renders the correct text', () => {
         const price = '69';
+        console.log("hello2")
         const inst = renderer.create(
             <CartAddButton price={price} />
         );
         const textInst = inst.root.findByType(Text);
+        console.log(inst.root.findByType(Text).props);
         expect(
             textInst.props.children
         ).toBe(" +  $" + price);

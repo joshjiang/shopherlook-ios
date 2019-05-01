@@ -39,6 +39,11 @@ class Look extends React.Component {
       imagesrc = this.props.product.images[0].src
 
     }
+    descriptionSplit = this.props.product.description
+    if (this.props.product.description != undefined) {
+      descriptionSplit = this.props.product.description.split('Product Description ')[1];
+    }
+    
    
 
     return (
@@ -48,7 +53,7 @@ class Look extends React.Component {
           {/* <Image source={{ uri: imagesrc }} resizeMode="cover" style={styles.mainImage} /> */}
           <LookPhoto product = {this.props.product}></LookPhoto>
           <Title product={this.props.product} />
-          <Description item={this.props.product} />
+          <Description descriptionSplit = {descriptionSplit} />
           {/* <Details product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} /> */}
           <DetailsClass product={this.props.product} item={sampleItem} id={this.props.id} proID={this.props.proID} />
 
@@ -238,12 +243,8 @@ function Title({ product }) {
   return (<Text style={styles.title}>{product.title}</Text>)
 }
 
-function Description({ item }) {
-  descriptionSplit = {item}.description
-  if (item.description != undefined) {
-    descriptionSplit = item.description.split('Product Description ')[1];
-  }
-  
+export function Description({ descriptionSplit }) {
+ 
 
   return (<Text style={styles.description}>{descriptionSplit}</Text>)
 }
