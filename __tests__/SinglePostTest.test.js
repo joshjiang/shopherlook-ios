@@ -4,11 +4,6 @@ import SinglePost, {Description, Title, DetailsTitle} from '../SinglePost.js';
 import renderer from 'react-test-renderer';
 import { Text, TouchableOpacity } from 'react-native';
 
-describe('App', () => {
-  it('should be able to run tests', () => {
-      expect(1 + 2).toEqual(3);
-  });
-});
 
 describe('Description', () => {
   it('renders the correct description', () => {
