@@ -182,7 +182,7 @@ class Look extends React.Component {
 
 
 // discover thumbnails
-const LookPicture = ({ photo }) =>
+export const LookPicture = ({ photo }) =>
   <Image source={{ uri: photo }} resizeMode="contain" style={styles.lookPhoto} />
 
 

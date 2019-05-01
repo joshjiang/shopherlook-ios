@@ -19,7 +19,6 @@ class InfluencerProfile extends Component {
     constructor(props) {
         
         super(props);
-        
 
         const { navigation } = this.props;
 
@@ -27,12 +26,11 @@ class InfluencerProfile extends Component {
 
             //array of all available products
             products: [], 
+            
             sellingID: '',
             personID: '',
             navigation: navigation
-            // sellingID: navigation.getParam('sellID', 'noid'),
-            // personID: navigation.getParam('person', 'noperson')
- 
+
         };
 
         
@@ -61,8 +59,6 @@ class InfluencerProfile extends Component {
 
     
     render() {
-        // get the parameter arguments passed through nav
-        const { navigation } = this.props;
 
         //ID to get items person is selling
         const sellingID = this.state.navigation.getParam('sellID', 'noid'); 
@@ -70,16 +66,9 @@ class InfluencerProfile extends Component {
         //ID to get information about the person
         const personID = this.state.navigation.getParam('person', 'noperson'); 
 
-        // this.setState({
-        //     sellingID: sellingID,
-        //     personID: personID
-            
-        // });
         return (
             <View style={styles.container}>
                 <ProfileContainer sellingID={sellingID} navigation={this.props.navigation} personID={personID} products={this.state.products} />
-                {/* <ProfileContainer sellingID={this.state.sellingID} navigation={this.props.navigation} personID={this.state.personID} products={this.state.products} /> */}
-
             </View>
         )
     }
@@ -119,26 +108,29 @@ class ProfileContainer extends Component {
         )
     }
 }
-
-//function/const that contains all of the components
-//BioContainer: info about influencer 
-//LookFeed: pics of all the objects
+/* function/const that contains all of the components
+* BioContainer: info about influencer 
+* LookFeed: pics of all the objects
+*/
 const InfluencerContainer = ({ pictures, sellingID, navigation, personID, products }) =>
     <View>
         <BioContainer personID={personID} />
         <LookFeed pictures={pictures} sellingID={sellingID} navigation={navigation} products={products} />
     </View>
-
-// ProfileIcons: light blue bar with influencer info 
-// InfluencerBio: influencer bio text
+/*
+* ProfileIcons: light blue bar with influencer info 
+* InfluencerBio: influencer bio text
+*/
 const BioContainer = ({ personID }) =>
     <View>
         <ProfileIcons personID={personID} />
         <InfluencerBio />
     </View>
 
-//InfluencerInfo: Influencer name and Instgram handle
-//FuncIcons: Instagram button and follow user button (not implemented yet)
+/*
+* InfluencerInfo: Influencer name and Instgram handle
+* FuncIcons: Instagram button and follow user button (not implemented yet)
+*/
 const ProfileIcons = ({ personID }) =>
     <View style={styles.modContainer}>
         <InfluencerInfo personID={personID} />
@@ -197,8 +189,11 @@ class InfluencerInfo extends Component {
         )
     }
 }
-//InstagramLinkClass: Instagram button that links to user's Instagram account
-//Add: Follow button
+
+/*
+* InstagramLinkClass: Instagram button that links to user's Instagram account
+* Add: Follow button
+*/
 const FuncIcons = ({ personID }) =>
     <View style={{ flexDirection: 'row', alignItems: 'right', justifyContent: 'space-between' }}>
         <InstagramLinkClass personID={personID} />
@@ -257,7 +252,7 @@ class InstagramLinkClass extends Component {
 }
 
 //add symbol with future follow functionality (none yet)
-const Add = ({ }) => 
+export const Add = ({ }) => 
     <AntDesign name="plus" size={30} style={styles.space2} />
 
 //INSTA TODO: get info from Instagram API (not implemented), currently static text
@@ -323,10 +318,11 @@ function LookFeed(props) {
     );
 }
 
-//each individual photo is a LookPicture,
-//allows for TouchableOpacity/button functionality, and future navigation functionality
+/*
+* each individual photo is a LookPicture,
+* allows for TouchableOpacity/button functionality, and future navigation functionality
+*/
 const LookPicture = ({ picture, navigation }) =>
-    // <TouchableOpacity onPress={() => navigation.navigate('SinglePostScreen')}>
     <TouchableOpacity >
         <LookPhoto photo={picture.img_urls[0]} />
     </TouchableOpacity>

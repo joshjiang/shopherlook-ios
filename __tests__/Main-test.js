@@ -1,5 +1,9 @@
 import React from 'react';
 import Main from '../Main';
+import Look from '../Main';
+import { Image} from 'react-native'
+
+
 import renderer from 'react-test-renderer';
 
 
@@ -14,5 +18,4 @@ test('renders correctly', () => {
     const tree = renderer.create(<Main />).toJSON();
     expect(tree).toMatchSnapshot();
 });
-
 

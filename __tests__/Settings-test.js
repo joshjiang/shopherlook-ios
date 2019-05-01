@@ -2,6 +2,8 @@ import React from "react";
 import renderer from "react-test-renderer";
 import Settings from '../Settings';
 import Info from '../Settings';
+import Notifications from '../Settings';
+
 import ViewHeader from '../Settings';
 import Banner from '../Settings';
 import {Text} from 'react-native';
@@ -54,4 +56,3 @@ describe('Banner', () => {
         ).toBe(`${st}`);
     });
 });
-
